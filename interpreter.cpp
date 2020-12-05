@@ -223,7 +223,7 @@ void Interpreter::executeModeCommand(string command) {
                 else {
                     rhythm = command[i];
 
-                    if (command[i + 1] == '.' || command[i + 1] == '*') {
+                    if (i + 1 < command.size() && (command[i + 1] == '.' || command[i + 1] == '*')) {
                         dot = true;
                         i += 2;
                     } 
@@ -237,12 +237,14 @@ void Interpreter::executeModeCommand(string command) {
                             myconverter.convertToRhythm(rhythm, dot));
 
                         myplayer.playNote(note, mysheet.BPM);
+                        note.release();
                     }
                     else if (mode == REPLACE) {
                         Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
 
                         myplayer.playNote(note, mysheet.BPM);
+                        note.release();
                     }
                     phase--;
                 }
