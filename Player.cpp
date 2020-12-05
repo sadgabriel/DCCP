@@ -13,7 +13,7 @@ void Player::playNote(Sheet& sheet) {
 }
 
 void Player::playNote(Note& note, int BPM) {
-	if (!note.is_NULL) {
+	if (note.is_NULL == false) {
 		Beep(convertToFreq(note.pitch), convertToMilisec(note.rhythm, BPM));
 	}
 
@@ -64,6 +64,12 @@ int Player::convertToFreq(const char* pitch) {
 	}
 	else if (tune == 'B') frequency = (int)61.7354;
 	else throw; // ERROR
+
+	// 옥타브넣기
+	// 옥타브 - 1 만큼 2의 거듭하기
+	for (int i = 0; i < octave - 1; ++i) {
+		frequency *= 2;
+	}
 
 	return frequency;
 }
@@ -149,9 +155,9 @@ int Player::convertToMilisec(const char* rhythm, int BPM) {
 			for (int j = 0; j < (4 - i); ++j) {
 				temp_unit_bit_num *= 2;
 			}
+			unit_bit_num += temp_unit_bit_num;	// 1/16박자를 단위로한 음의 길이
 		}
 
-		unit_bit_num += temp_unit_bit_num;		/// 1/16박자를 단위로한 음의 길이
 	} // end for
 	
 	// 이제 BPM을 고려해서 실제로 사용되는 밀리초 단위의 정수를 구한다.

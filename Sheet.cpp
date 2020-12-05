@@ -9,7 +9,7 @@ Sheet::Sheet() {
 }
 
 // 현재 커서와 페이지 위치에 주어진 계이름과 리듬의 노트를 만들어서 삽입한다.
-Note& Sheet::insert(const char* pitch, const char* rhythm) {
+Note Sheet::insert(const char* pitch, const char* rhythm) {
 	Note new_note = Note{ pitch, rhythm };
 
 	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
@@ -28,7 +28,7 @@ void Sheet::remove(int number) {
 	}
 }
 
-Note& Sheet::replace(const char* pitch, const char* rhythm) {
+Note Sheet::replace(const char* pitch, const char* rhythm) {
 	Note new_note = Note{ pitch, rhythm };
 
 	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
@@ -41,6 +41,7 @@ Note& Sheet::replace(const char* pitch, const char* rhythm) {
 }
 
 
+// ===================================== Paper 클래스 =============================================
 
 Paper::Paper() {
 	for (int i = 0; i < 48; ++i) {

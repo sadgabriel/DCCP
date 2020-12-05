@@ -226,7 +226,7 @@ void Interpreter::executeModeCommand(string command) {
                     if (i + 1 < command.size() && (command[i + 1] == '.' || command[i + 1] == '*')) {
                         dot = true;
                         i += 2;
-                    } 
+                    }
                     else {
                         dot = false;
                         i++;
@@ -251,7 +251,7 @@ void Interpreter::executeModeCommand(string command) {
             }
         }
 
-
+    
 
     }
 }

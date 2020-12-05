@@ -43,11 +43,11 @@ public:
 
 	// -------- 연산자 --------
 	// 현재 커서와 페이지 위치에 주어진 계이름과 리듬의 노트를 만들어서 삽입한다.
-	Note& insert(const char*, const char*);		// 노트를 악보에 삽입할 때 마다 소리가 나야한다.
+	Note insert(const char*, const char*);		// 노트를 악보에 삽입할 때 마다 소리가 나야한다.
 	// 현재 커서와 페이지에 있는 노트를 삭제한다.
 	void remove(int number = 1);
 	// 현재 커서와 페이지에 있는 노트를 주어진 계이름과 리듬의 노트로 변경한다.
-	Note& replace(const char*, const char*);
+	Note replace(const char*, const char*);
 
 	// 현재 커서와 페이지 위치에 있는 노트를 리턴한다.
 	Note getNote() {

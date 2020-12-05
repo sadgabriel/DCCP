@@ -29,9 +29,10 @@ void Printer::print(int octave, Sheet& sheet) {
 	// 첫번째 Cursor 커서 줄
 	std::cout << std::setw(8) << std::left << "Cursor";	//	8
 
-	int pos = sheet.cursor.getPosition();
+	int cursor_pos = sheet.cursor.getPosition();
+
 	for (int i = 0; i < 24; ++i) {						//	24*4 = 96
-		if (i == pos) {
+		if (i == cursor_pos) {
 			std::cout << "V   ";
 		}
 		else {
@@ -58,11 +59,11 @@ void Printer::print(int octave, Sheet& sheet) {
 	// 첫번째 Pitch 계이름 줄
 	std::cout << std::setw(8) << std::left << "Pitch";			//	8
 
+	sheet.cursor.cs();
 	for (int i = 0; i < 24; ++i) {								//	24*4 = 96
-		Note cur_note = sheet.getNote();
-
-		if (cur_note.is_NULL == true) {
-			std::cout << "    ";			// 널노트의 계이름은 빈 공간.
+		
+		if (sheet.getNote().is_NULL == true) {
+			std::cout << "NUL ";			// 널노트의 계이름은 빈 공간.
 		}
 		else {
 			std::cout << std::setw(4) << std::left << sheet.getNote().getPitch();
@@ -77,9 +78,12 @@ void Printer::print(int octave, Sheet& sheet) {
 	// 줄10
 	// 첫번째 박자 Rhythm 줄
 	std::cout << std::setw(8) << std::left << "Rhythm";			//	8
+		// 어머님께서는 항상 커서를 원위치 하는 것을 잊지 말거라,라고 말씀하셨지.	// 어머님께서는 항상 커서를 원위치 하는 것을 잊지 말거라,라고 말씀하셨지.
+	sheet.cursor.cs();
 	for (int i = 0; i < 24; ++i) {								//	24*4 = 96
+
 		if (sheet.getNote().is_NULL) {
-			std::cout << "    ";
+			std::cout << "0   ";
 		}
 		else {
 			std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
@@ -115,7 +119,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	// 두번째 Cursor 커서 줄
 	std::cout << std::setw(8) << std::left << "Cursor";	//	8
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
-		if (i == sheet.cursor.getPosition()) {
+		if (i == cursor_pos) {
 			std::cout << "V   ";
 		}
 		else {
@@ -141,11 +145,12 @@ void Printer::print(int octave, Sheet& sheet) {
 	// 줄20
 	// 두번째 Pitch 계이름 줄
 	std::cout << std::setw(8) << std::left << "Pitch";	//	8
-	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
-		Note cur_note = sheet.getNote();
 
-		if (cur_note.is_NULL == true) {
-			std::cout << "    ";			// 널노트의 계이름은 빈 공간.
+	sheet.cursor.ct(24);
+	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
+
+		if (sheet.getNote().is_NULL == true) {
+			std::cout << "NUL ";			// 널노트의 계이름은 빈 공간.
 		}
 		else {
 			std::cout << std::setw(4) << std::left << sheet.getNote().getPitch();
@@ -160,9 +165,12 @@ void Printer::print(int octave, Sheet& sheet) {
 	// 줄22
 	// 두번째 박자 Rhythm 줄
 	std::cout << std::setw(8) << std::left << "Rhythm";	//	8
+
+	sheet.cursor.ct(24);
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
+
 		if (sheet.getNote().is_NULL) {
-			std::cout << "    ";
+			std::cout << "0   ";
 		}
 		else {
 			std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
@@ -191,6 +199,10 @@ void Printer::print(int octave, Sheet& sheet) {
 
 	// 줄25
 	std::cout << std::endl;
+
+
+	// 어머님께서는 항상 커서를 원위치 하는 것을 잊지 말거라,라고 말씀하셨지.
+	sheet.cursor.ct(cursor_pos);
 }
 
 // x is the column, y is the row. The origin (0,0) is top-left.
