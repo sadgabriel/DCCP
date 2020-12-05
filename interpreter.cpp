@@ -237,14 +237,12 @@ void Interpreter::executeModeCommand(string command) {
                             myconverter.convertToRhythm(rhythm, dot));
 
                         myplayer.playNote(note, mysheet.BPM);
-                        note.release();
                     }
                     else if (mode == REPLACE) {
                         Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
 
                         myplayer.playNote(note, mysheet.BPM);
-                        note.release();
                     }
                     phase--;
                 }
