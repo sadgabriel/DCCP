@@ -206,7 +206,7 @@ void Interpreter::executeModeCommand(string command) {
         char pitch = '\0', rhythm = '\0';
         bool dot = false;
 
-        int i = 0;
+        unsigned int i = 0;
         while (i < command.size()) {
             if (phase == 0) {
                 pitch = command[i];

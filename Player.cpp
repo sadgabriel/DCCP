@@ -37,34 +37,35 @@ int Player::convertToFreq(const char* pitch) {
 		is_sharp = false;
 	}
 
-	int frequency;
+	int frequency = 0;
 	// 옥타브가 1일 때 기준 음정의 주파수를 대입.
 	if (tune == 'C') {
-		if (is_sharp == false) frequency = 32.7032;
-		else frequency = 34.6478;
+		if (is_sharp == false) frequency = (int)32.7032;
+		else frequency = (int)34.6478;
 	}
 	else if (tune == 'D') {
-		if (is_sharp == false) frequency = 36.7081;
-		else frequency = 38.8909;		// # sharp
+		if (is_sharp == false) frequency = (int)36.7081;
+		else frequency = (int)38.8909;		// # sharp
 	}
 	else if (tune == 'E') {
-		if (is_sharp == false) frequency = 41.2034;
+		if (is_sharp == false) frequency = (int)41.2034;
 	}
 	else if (tune == 'F') {
-		if (is_sharp == false) frequency = 43.6535;
-		else frequency = 46.2493;
+		if (is_sharp == false) frequency = (int)43.6535;
+		else frequency = (int)46.2493;
 	}
 	else if (tune == 'G') {
-		if (is_sharp == false) frequency = 48.9994;
-		else frequency = 51.9130;
+		if (is_sharp == false) frequency = (int)48.9994;
+		else frequency = (int)51.9130;
 	}
 	else if (tune == 'A') {
-		if (is_sharp == false) frequency = 55.0000;
-		else frequency = 58.2705;
+		if (is_sharp == false) frequency = (int)55.0000;
+		else frequency = (int)58.2705;
 	}
-	else if (tune == 'B') frequency = 61.7354;
+	else if (tune == 'B') frequency = (int)61.7354;
 	else throw; // ERROR
 
+	return frequency;
 }
 
 

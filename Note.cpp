@@ -12,4 +12,7 @@ Note::Note(const char* pit, const char* rhy) {
 	if ((pit[0] == '@') || (pit[0] == ',')) {
 		is_rest = true;
 	}
+	else {
+		is_rest = false;
+	}
 }
