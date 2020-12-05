@@ -146,7 +146,7 @@ int Player::convertToMilisec(char* rhythm, int BPM) {
 		unit_bit_num += temp_unit_bit_num;		/// 1/16박자를 단위로한 음의 길이
 	} // end for
 	
-	  // 이제 BPM을 고려해서 실제로 사용되는 밀리초 단위의 정수를 구한다.
+	// 이제 BPM을 고려해서 실제로 사용되는 밀리초 단위의 정수를 구한다.
 	// unit_bit_milisec은 프로그램에서 최소인 1/16박자의 실제 시간이다.
 	
 	// BPM은 노래의 속도를 나타내는 척도이다.
