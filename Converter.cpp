@@ -8,7 +8,7 @@
 const char* Converter::convertToPitch(char command_pitch, int oct) {
 	//char pitch[4];
 	// 동적할당
-	char* pitch = new char[4];
+	char* pitch = new char[4]{ 0,0,0,0 };
 
 	if (command_pitch == 'z') {
 		pitch[0] = 'C';
@@ -128,7 +128,7 @@ const char* Converter::convertToPitch(char command_pitch, int oct) {
 // rhythm[4] = '\0'                        zxcvb -> 1/4* 1/8 1/16 /// C#1/8* / z1/8* / zv* / zf (C#4 - 1/8*) zxcvb asdf
 const char* Converter::convertToRhythm(char command_rhythm, bool is_dotted) {
 	//char rhythm[5];
-	char* rhythm = new char[5];
+	char* rhythm = new char[5]{ 0,0,0,0,0 };
 
 	if (command_rhythm == 'z' or command_rhythm == 'a') {
 		rhythm[0] = '1';
