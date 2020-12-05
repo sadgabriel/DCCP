@@ -2,12 +2,15 @@
 
 void Printer::print(int octave, Sheet& sheet) {
 	
+	// 줄0
 	// 타이틀
 	std::cout << "DCCP: DGIST Convergence Composer Program" << std::endl;
-
+	
+	// 줄1
 	std::cout << std::endl;
 
-	// 윗쪽 경계 줄1
+	// 줄2
+	// 첫번째 윗쪽 경계 
 	std::cout << std::setw(11) << std::left << "BPM: " << sheet.BPM << ", ";
 	std::cout << std::setw(16) << std::left << "Current Octave: " << std::setw(2) << std::left  << octave;
 	for (int i = 0; i < 90; ++i) {
@@ -17,7 +20,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	// Cursor 커서 줄1
+	// 첫번째 Cursor 커서 줄
 	std::cout << std::setw(8) << std::left << "Cursor";
 	int pos = sheet.cursor.getPosition();
 	for (int i = 0; i < 24; ++i) {
@@ -33,7 +36,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 
 
-	// Order 순서 줄1
+	// 첫번째 Order 순서 줄
 	std::cout << std::setw(8) << std::left << "Order";
 	for (int i = 0; i < 24; ++i) {
 		std::cout << std::setw(4) << std::left << i;
@@ -42,7 +45,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	// Pitch 계이름 줄1
+	// 첫번째 Pitch 계이름 줄
 	std::cout << std::setw(8) << std::left << "Pitch";
 	for (int i = 0; i < 24; ++i) {
 		std::cout << std::setw(4) << std::left << sheet.getNote().getPitch();
@@ -51,7 +54,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	// length 길이 줄1
+	// 첫번째 length 길이 줄
 	std::cout << std::setw(8) << std::left << "Rhythm";
 	for (int i = 0; i < 24; ++i) {
 		std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
@@ -60,7 +63,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	// 아랫쪽 경계 줄1
+	// 첫번째 아랫쪽 경계 줄
 	for (int i = 0; i < 119; ++i) {
 		std::cout << '-';
 	}
@@ -69,7 +72,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 
 	
-	// 윗쪽 경계 줄2
+	// 두번째 윗쪽 경계 줄
 	for (int i = 0; i < 119; ++i) {
 		std::cout << '-';
 	}
@@ -77,7 +80,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	// Cursor 커서 줄2
+	// 두번째 Cursor 커서 줄
 	std::cout << std::setw(8) << std::left << "Cursor";
 	for (int i = 24; i < 48; ++i) {
 		if (i == sheet.cursor.getPosition()) {
@@ -92,7 +95,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 
 
-	// Order 순서 줄2
+	// 두번째 Order 순서 줄
 	std::cout << std::setw(8) << std::left << "Order";
 	for (int i = 24; i < 48; ++i) {
 		std::cout << std::setw(4) << std::left << i;
@@ -101,7 +104,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	// Pitch 계이름 줄2
+	// 두번째 Pitch 계이름 줄
 	std::cout << std::setw(8) << std::left << "Pitch";
 	for (int i = 24; i < 48; ++i) {
 		std::cout << std::setw(4) << std::left << sheet.getNote().getPitch();
@@ -110,7 +113,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	// length 길이 줄2
+	// 두번째 length 길이 줄
 	std::cout << std::setw(8) << std::left << "Rhythm";
 	for (int i = 24; i < 48; ++i) {
 		std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
@@ -119,7 +122,7 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	// 아랫쪽 경계 줄2
+	// 두번째 아랫쪽 경계 줄
 	for (int i = 0; i < 53; ++i) {
 		std::cout << '-';
 	}
