@@ -6,7 +6,7 @@
 
 class Printer{
 public:
-	void print(int, Cursor&, Page&, Sheet&);
+	void print(int octave, Sheet&);
 
     // x is the column, y is the row. The origin (0,0) is top-left.
     void setCursorPosition(int x, int y);

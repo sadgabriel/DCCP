@@ -13,7 +13,7 @@ void removeSpace(string& str) {
 }
 
 void Interpreter::print() {
-    myprinter.print(mysheet);
+    myprinter.print(octave, mysheet);
 }
 
 void Interpreter::execute(string command) {
@@ -151,6 +151,12 @@ void Interpreter::executeKeywordCommand(string command) {
         else octave = 0;
     }
 
+    // change BPM
+    else if (command.find("BPM") == 0) {
+        int new_bpm = stoi(command.substr(3));
+        if (new_bpm > 0) mysheet.BPM = new_bpm;
+    }
+
     // system
     else if (command == "exit") {
         exit(0);
@@ -162,9 +168,9 @@ void Interpreter::executeKeywordCommand(string command) {
 
         for (int page_idx = 0; page_idx < 30; page_idx++) {
             for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
-                myplayer.playNote(mysheet.getNote());
+                myplayer.playNote(mysheet);
                 mysheet.cursor.cr();
-                myprinter.print(mysheet);
+                myprinter.print(octave, mysheet);
             }
             mysheet.cursor.cs();
             mysheet.page.pr();
@@ -198,34 +204,49 @@ void Interpreter::executeModeCommand(string command) {
 
         int phase = 0, temp_octave;
         char pitch = '\0', rhythm = '\0';
+        bool dot = false;
 
-        for (char c : command) {
+        int i = 0;
+        while (i < command.size()) {
             if (phase == 0) {
-                pitch = c;
+                pitch = command[i];
                 phase++;
                 temp_octave = octave;
+                i++;
             }
             else if (phase == 1) {
-                if (c == '+') temp_octave++;
-                else if (c == '-') temp_octave--;
+                if (command[i] == '+') temp_octave++;
+                else if (command[i] == '-') temp_octave--;
                 else {
-                    rhythm = c;
+                    rhythm = command[i];
+
+                    if (command[i + 1] == '.' || command[i + 1] == '*') {
+                        dot = true;
+                        i += 2;
+                    } 
+                    else {
+                        dot = false;
+                        i++;
+                    }
 
                     if (mode == INSERT) {
                         Note note = mysheet.insert(myconverter.convertToPitch(pitch, temp_octave),
-                            myconverter.convertToRhythm(rhythm, temp_octave));
+                            myconverter.convertToRhythm(rhythm, dot));
 
-                        myplayer.playNote(note);
+                        myplayer.playNote(note, mysheet.BPM);
                     }
                     else if (mode == REPLACE) {
-                        Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave), 
-                            myconverter.convertToRhythm(rhythm, temp_octave));
+                        Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
+                            myconverter.convertToRhythm(rhythm, dot));
 
-                        myplayer.playNote(note);
+                        myplayer.playNote(note, mysheet.BPM);
                     }
                     phase--;
                 }
             }
         }
+
+
+
     }
 }

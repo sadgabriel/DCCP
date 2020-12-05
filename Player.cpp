@@ -12,6 +12,12 @@ void Player::playNote(Sheet& sheet) {
 	}
 }
 
+void Player::playNote(Note& note, int BPM) {
+	if (!note.is_NULL) {
+		Beep(convertToFreq(note.pitch), convertToMilisec(note.rhythm, BPM));
+	}
+
+}
 
 int Player::convertToFreq(const char* pitch) {
 	// length of pitch is 4

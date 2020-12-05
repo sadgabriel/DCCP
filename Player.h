@@ -6,7 +6,7 @@ class Player{
 
 public:
 	void playNote(Sheet&);
-
+	void playNote(Note&, int BPM);
 
 private:
 
