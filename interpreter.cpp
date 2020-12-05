@@ -151,6 +151,12 @@ void Interpreter::executeKeywordCommand(string command) {
         else octave = 0;
     }
 
+    // change BPM
+    else if (command.find("BPM") == 0) {
+        int new_bpm = stoi(command.substr(3));
+        if (new_bpm > 0) mysheet.BPM = new_bpm;
+    }
+
     // system
     else if (command == "exit") {
         exit(0);
