@@ -191,13 +191,13 @@ void Interpreter::executeModeCommand(string command) {
         
         if (mode == INSERT) {
             for (const Note& note : notes) {
-                mysheet.insert(mycursor, mypage, note);
+                mysheet.insert(note.pitch, note.rhythm);
                 mycursor.cr();
             }
         }
         else if (mode == REPLACE) {
             for (const Note& note : notes) {
-               mysheet.replace(mycursor, mypage, note);
+               mysheet.replace(note.pitch, note.rhythm);
                mycursor.cr();
             }
         }
