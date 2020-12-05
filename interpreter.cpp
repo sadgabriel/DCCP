@@ -151,7 +151,7 @@ void Interpreter::executeKeywordCommand(string command) {
     else if (user_commands.find(command) != user_commands.end()) {
         execute((*user_commands.find(command)).second);
     }
-    else throw(invalid_argument("the user-defined command not exists"));
+    
 
 
 }
