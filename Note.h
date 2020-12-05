@@ -16,12 +16,13 @@ public:
 	}
 
 	// 노트 생성자
-	Note(int, char, char);
-
 	Note(const char*, const char*);
 
-	Note(int, int);
-	// 각각의 생성자 모두에서 모든 멤버 변수가 초기화된다.
+	// 노트 소멸자. 동적 배열 해제한다.
+	~Note() {
+		delete[] pitch;
+		delete[] rhythm;
+	}
 
 
 	// 길이4 배열
