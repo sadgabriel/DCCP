@@ -37,13 +37,13 @@ public:
 	Sheet();
 
 	// 커서와 페이지 객체
-	Cursor my_cursor;
-	Page my_page;
+	Cursor cursor;
+	Page page;
 
 
 	// -------- 연산자 --------
 	// 현재 커서와 페이지 위치에 주어진 계이름과 리듬의 노트를 만들어서 삽입한다.
-	void insert(const char*, const char*);		// 노트를 악보에 삽입할 때 마다 소리가 나야한다.
+	Note& insert(const char*, const char*);		// 노트를 악보에 삽입할 때 마다 소리가 나야한다.
 	// 현재 커서와 페이지에 있는 노트를 삭제한다.
 	void remove(int number = 1);
 	// 현재 커서와 페이지에 있는 노트를 주어진 계이름과 리듬의 노트로 변경한다.
@@ -51,7 +51,7 @@ public:
 
 	// 현재 커서와 페이지 위치에 있는 노트를 리턴한다.
 	Note getNote() {
-		return paper_array[my_page.getPosition()].getNote(my_cursor.getPosition());
+		return paper_array[page.getPosition()].getNote(cursor.getPosition());
 	}
 
 	// 페이지의 끝이 어디인지 알려주는 정수

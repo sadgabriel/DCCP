@@ -9,26 +9,29 @@ Sheet::Sheet() {
 }
 
 // 현재 커서와 페이지 위치에 주어진 계이름과 리듬의 노트를 만들어서 삽입한다.
-void Sheet::insert(const char* pitch, const char* rhythm) {
+Note& Sheet::insert(const char* pitch, const char* rhythm) {
 	Note new_note{ pitch, rhythm };
 
-	paper_array[my_page.getPosition()].insert(my_cursor.getPosition(), new_note);
+	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
 
 	// 추가 이후에 한 칸 뒤로 이동한다.
-	my_cursor.cr();
+	cursor.cr();
+
+	// 연주를 위해 노트를 리턴한다.
+	return new_note;
 }
 
 void Sheet::remove(int number) {
 	for (int i = 0; i < number; ++i) {
 		// 페이퍼 클래스에서 자동으로 노트들을 땡겨준다.
-		paper_array[my_page.getPosition()].remove(my_cursor.getPosition());
+		paper_array[page.getPosition()].remove(cursor.getPosition());
 	}
 }
 
 void Sheet::replace(const char* pitch, const char* rhythm) {
 	Note new_note{ pitch, rhythm };
 
-	paper_array[my_page.getPosition()].insert(my_cursor.getPosition(), new_note);
+	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
 }
 
 
