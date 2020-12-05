@@ -28,10 +28,16 @@ void Sheet::remove(int number) {
 	}
 }
 
-void Sheet::replace(const char* pitch, const char* rhythm) {
+Note& Sheet::replace(const char* pitch, const char* rhythm) {
 	Note new_note{ pitch, rhythm };
 
 	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
+
+	// 변경 이후에 한 칸 뒤로 이동한다.
+	cursor.cr();
+
+	// 연주를 위해 노트를 리턴한다.
+	return new_note;
 }
 
 

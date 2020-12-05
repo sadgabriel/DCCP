@@ -45,7 +45,7 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	// Pitch 계이름 줄1
 	std::cout << std::setw(8) << std::left << "Pitch";
 	for (int i = 0; i < 24; ++i) {
-		std::cout << std::setw(4) << std::left << sheet.getNote(i, page).getPitch();
+		std::cout << std::setw(4) << std::left << sheet.getNote().getPitch();
 	}
 
 	std::cout << std::endl;
@@ -54,7 +54,7 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	// length 길이 줄1
 	std::cout << std::setw(8) << std::left << "Length";
 	for (int i = 0; i < 24; ++i) {
-		std::cout << std::setw(4) << std::left << sheet.getNote(i, page).getLength();
+		std::cout << std::setw(4) << std::left << sheet.getNote().getLength();
 	}
 
 	std::cout << std::endl;
@@ -104,7 +104,7 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	// Pitch 계이름 줄2
 	std::cout << std::setw(8) << std::left << "Pitch";
 	for (int i = 24; i < 48; ++i) {
-		std::cout << std::setw(4) << std::left << sheet.getNote(i, page).getPitch();
+		std::cout << std::setw(4) << std::left << sheet.getNote().getPitch();
 	}
 
 	std::cout << std::endl;
@@ -113,7 +113,7 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	// length 길이 줄2
 	std::cout << std::setw(8) << std::left << "Length";
 	for (int i = 24; i < 48; ++i) {
-		std::cout << std::setw(4) << std::left << sheet.getNote(i, page).getLength();
+		std::cout << std::setw(4) << std::left << sheet.getNote().getLength();
 	}
 
 	std::cout << std::endl;

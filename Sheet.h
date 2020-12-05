@@ -47,7 +47,7 @@ public:
 	// 현재 커서와 페이지에 있는 노트를 삭제한다.
 	void remove(int number = 1);
 	// 현재 커서와 페이지에 있는 노트를 주어진 계이름과 리듬의 노트로 변경한다.
-	void replace(const char*, const char*);
+	Note& replace(const char*, const char*);
 
 	// 현재 커서와 페이지 위치에 있는 노트를 리턴한다.
 	Note getNote() {

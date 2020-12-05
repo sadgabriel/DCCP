@@ -12,7 +12,7 @@ void Player::play(int octave, Cursor& cursor, Page& page, Sheet& sheet, Printer&
 
 			system("cls");
 			printer.print(octave, cursor, page, sheet);
-			sheet.getNote(cursor.getPosition(), page).beep();
+			sheet.getNote().beep();
 			if (j != 47) {
 				cursor.cr();
 			}
