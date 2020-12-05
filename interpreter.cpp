@@ -13,7 +13,7 @@ void removeSpace(string& str) {
 }
 
 void Interpreter::print() {
-    myprinter.print(mysheet);
+    myprinter.print(octave, mysheet);
 }
 
 void Interpreter::execute(string command) {
@@ -170,7 +170,7 @@ void Interpreter::executeKeywordCommand(string command) {
             for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
                 myplayer.playNote(mysheet.getNote());
                 mysheet.cursor.cr();
-                myprinter.print(mysheet);
+                myprinter.print(octave, mysheet);
             }
             mysheet.cursor.cs();
             mysheet.page.pr();

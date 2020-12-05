@@ -1,6 +1,6 @@
 #include "Printer.h"
 
-void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
+void Printer::print(int octave, Sheet& sheet) {
 	
 	// 타이틀
 	std::cout << "DCCP: DGIST Convergence Composer Program" << std::endl;
@@ -8,7 +8,7 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	std::cout << std::endl;
 
 	// 윗쪽 경계 줄1
-	std::cout << std::setw(11) << std::left << "BPM: 200, ";
+	std::cout << std::setw(11) << std::left << "BPM: " << sheet.BPM << ", ";
 	std::cout << std::setw(16) << std::left << "Current Octave: " << std::setw(2) << std::left  << octave;
 	for (int i = 0; i < 90; ++i) {
 		std::cout << '-';
@@ -19,7 +19,7 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 
 	// Cursor 커서 줄1
 	std::cout << std::setw(8) << std::left << "Cursor";
-	int pos = cursor.getPosition();
+	int pos = sheet.cursor.getPosition();
 	for (int i = 0; i < 24; ++i) {
 		if (i == pos) {
 			std::cout << "V   ";
@@ -52,9 +52,9 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	std::cout << std::endl;
 
 	// length 길이 줄1
-	std::cout << std::setw(8) << std::left << "Length";
+	std::cout << std::setw(8) << std::left << "Rhythm";
 	for (int i = 0; i < 24; ++i) {
-		std::cout << std::setw(4) << std::left << sheet.getNote().getLength();
+		std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
 	}
 
 	std::cout << std::endl;
@@ -80,7 +80,7 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	// Cursor 커서 줄2
 	std::cout << std::setw(8) << std::left << "Cursor";
 	for (int i = 24; i < 48; ++i) {
-		if (i == cursor.getPosition()) {
+		if (i == sheet.cursor.getPosition()) {
 			std::cout << "V   ";
 		}
 		else {
@@ -111,9 +111,9 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	std::cout << std::endl;
 
 	// length 길이 줄2
-	std::cout << std::setw(8) << std::left << "Length";
+	std::cout << std::setw(8) << std::left << "Rhythm";
 	for (int i = 24; i < 48; ++i) {
-		std::cout << std::setw(4) << std::left << sheet.getNote().getLength();
+		std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
 	}
 
 	std::cout << std::endl;
@@ -123,7 +123,7 @@ void Printer::print(int octave, Cursor& cursor, Page& page, Sheet& sheet) {
 	for (int i = 0; i < 53; ++i) {
 		std::cout << '-';
 	}
-	std::cout << std::setw(7) << std::left << " page: " << std::setw(5) << std::left << page.getPosition();
+	std::cout << std::setw(7) << std::left << " page: " << std::setw(5) << std::left << sheet.page.getPosition();
 	for (int i = 0; i < 54; ++i) {
 		std::cout << '-';
 	}
