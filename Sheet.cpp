@@ -72,13 +72,14 @@ void Paper::insert(int idx, Note note) {
 }
 
 void Paper::remove(int idx) {
-	// 만약 null노트 없는 인덱스라면 아무 것도 하지 않는다.
+	// 만약 null노트의 인덱스라면 아무 것도 하지 않는다.
 	if (note_array[idx].is_NULL == true) {
 		// do nothing
 	}
 	// 그렇지 않고 만약 무언가 있다면
 	else {
-		// 빈 null노트를 넣어서 삭제 처리한다.
+		// release라고 빈 null노트를 넣어서 삭제 처리한다.
+		note_array[idx].release();
 		note_array[idx] = Note();
 
 		--size;	// 사이즈 감소

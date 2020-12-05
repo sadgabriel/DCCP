@@ -16,10 +16,16 @@ public:
 	// 노트 생성자
 	Note(const char*, const char*);
 
-	// 노트 소멸자. 동적 배열 해제한다.
-	~Note() {
+	// 노트 소멸자
+	~Note() {}
+
+	// 동적 할당 해제
+	void release() {
 		delete[] pitch;
 		delete[] rhythm;
+
+		is_NULL = true;
+		is_rest = true;
 	}
 
 
