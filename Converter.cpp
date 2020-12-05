@@ -6,7 +6,9 @@
 // pitch[2] = 샾# 여부, 플랫b은 없다.
 // pitch[3] = '\0'
 const char* Converter::convertToPitch(char command_pitch, int oct) {
-	char pitch[4];
+	//char pitch[4];
+	// 동적할당
+	char* pitch = new char[4];
 
 	if (command_pitch == 'z') {
 		pitch[0] = 'C';
@@ -122,10 +124,11 @@ const char* Converter::convertToPitch(char command_pitch, int oct) {
 // rhythm[0] = 1
 // rhythm[1] = /
 // rhythm[2] = 4	(ex)
-// rhythm[4] = '\0' OR 6 when rhythm is 1/16.
-// rhythm[3] = '\0'
-const char* Converter::convertToRhythm(char command_rhythm, bool dotted) {
-	char rhythm[4];
+// rhythm[3] = '\0' OR 6 when rhythm is 1/16.
+// rhythm[4] = '\0'                        zxcvb -> 1/4* 1/8 1/16 /// C#1/8* / z1/8* / zv* / zf (C#4 - 1/8*) zxcvb asdf
+const char* Converter::convertToRhythm(char command_rhythm, bool is_dotted) {
+	//char rhythm[5];
+	char* rhythm = new char[5];
 
 	if (command_rhythm == 'z') {
 		rhythm[0] = '1';
@@ -154,4 +157,12 @@ const char* Converter::convertToRhythm(char command_rhythm, bool dotted) {
 		rhythm[3] = '6';
 	}
 	else throw;
+
+	// 점음표
+	// 1/16*은 없다.
+	if ((is_dotted == true) && (command_rhythm == 'b')) {
+		rhythm[3] = '*';
+	}
+
+	return rhythm;
 }
