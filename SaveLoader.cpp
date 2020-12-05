@@ -45,7 +45,6 @@ void SaveLoader::load(std::string filename, Sheet& mysheet) {
             rhythm = line.substr(delimiter_pos+1);
             
             mysheet.insert(pitch.c_str(), rhythm.c_str());
-            mysheet.cursor.cr();
         }
         mysheet.cursor.cs();
         mysheet.page.pr();
