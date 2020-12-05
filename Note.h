@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include <windows.h>
 
 class Note{
 public:
-	// NULL_Note´Â ÁÖÆÄ¼ö´Â »ó°ü¾ø°í, ±æÀÌ°¡ 0ÀÌ´Ù.
-	// ½°Ç¥´Â ÁÖÆÄ¼ö°¡ 0ÀÌ°í ±æÀÌ¸¦ °®´Â´Ù.
+	// NULL_NoteëŠ” ì£¼íŒŒìˆ˜ëŠ” ìƒê´€ì—†ê³ , ê¸¸ì´ê°€ 0ì´ë‹¤.
+	// ì‰¼í‘œëŠ” ì£¼íŒŒìˆ˜ê°€ 0ì´ê³  ê¸¸ì´ë¥¼ ê°–ëŠ”ë‹¤.
 	Note() {
 		freq = 0;
 		length = 0;
@@ -16,34 +16,53 @@ public:
 	Note(const char*, const char*);
 
 	Note(int, int);
-	// °¢°¢ÀÇ »ý¼ºÀÚ ¸ðµÎ¿¡¼­ ¸ðµç ¸â¹ö º¯¼ö°¡ ÃÊ±âÈ­µÈ´Ù.
+	// ê°ê°ì˜ ìƒì„±ìž ëª¨ë‘ì—ì„œ ëª¨ë“  ë©¤ë²„ ë³€ìˆ˜ê°€ ì´ˆê¸°í™”ëœë‹¤.
 
 	bool is_NULL;
 	bool is_rest;
 
+	// ê¸¸ì´4 ë°°ì—´
+	// length of pitch is 4
+	// pitch[0] = ê³„ì´ë¦„ C~B
+	// pitch[1] = ì˜¥íƒ€ë¸Œ
+	// pitch[2] = Â˜ìƒ¾# ì—¬ë¶€, í”Œëž«bì€ ì—†ë‹¤.
+	// pitch[3] = '\0'
 	char* pitch;
+
+	// ê¸¸ì´5 ë°°ì—´
+	// rhythm[0] = 1
+	// rhythm[1] = /
+	// rhythm[2] = 4 (ex) 1/4
+	// rhythm[3] = '\0' OR 6 when rhythm is 1/16. OR dot*
+	// rhythm[4] = '\0'
 	char* rhythm;
 
-	int freq;		// ³ëÆ®¿¡ ÇØ´çÇÏ´Â À½ÀÇ ÁÖÆÄ¼ö¸¦ Á¤¼ö·Î ÀúÀå.
-	int length;		// ³ëÆ®¿¡ ÇØ´çÇÏ´Â À½¿¡ ±æÀÌ¸¦ Á¤¼ö·Î ÀúÀå.
-	const char* getPitch();		// ³ëÆ®ÀÇ °èÀÌ¸§À» ¸®ÅÏÇÑ´Ù. private º¯¼ö·Î pit (char¹è¿­)À» µû·Î °ü¸®ÇØÁØ´Ù.
-	const char* getLength();	// ³ëÆ®ÀÇ Á¤¼ö ±æÀÌ¸¦ ¹ÚÀÚ·Î ÀüÈ¯ÇÏ¿© ¸®ÅÏÇÑ´Ù. ex) 1200 / lengthPerBit -> "1/1".
+	const char* getPitch() { return pitch; }
+	const char* getRhythm() { return rhythm; }
+
+
+	int freq;		// ë…¸íŠ¸ì— í•´ë‹¹í•˜ëŠ” ìŒì˜ ì£¼íŒŒìˆ˜ë¥¼ ì •ìˆ˜ë¡œ ì €ìž¥.
+	int length;		// ë…¸íŠ¸ì— í•´ë‹¹í•˜ëŠ” ìŒì— ê¸¸ì´ë¥¼ ì •ìˆ˜ë¡œ ì €ìž¥.
+
+	// ------------------------------ ì¶”í›„ ìˆ˜ì •
+	const char* getPitch();		// ë…¸íŠ¸ì˜ ê³„ì´ë¦„ì„ ë¦¬í„´í•œë‹¤. private ë³€ìˆ˜ë¡œ pit (charë°°ì—´)ì„ ë”°ë¡œ ê´€ë¦¬í•´ì¤€ë‹¤.
+	const char* getLength();	// ë…¸íŠ¸ì˜ ì •ìˆ˜ ê¸¸ì´ë¥¼ ë°•ìžë¡œ ì „í™˜í•˜ì—¬ ë¦¬í„´í•œë‹¤. ex) 1200 / lengthPerBit -> "1/1".
 	
 	void beep();
 
-	int lengthPerBit = 150;		// BpmÀº 200À¸·Î °¡Á¤ÇÑ´Ù.
+	int lengthPerBit = 150;		// Bpmì€ 200ìœ¼ë¡œ ê°€ì •í•œë‹¤.
 
 private:
-	// Á¦°ö ¿¬»êÀÇ Á¤È®µµ¸¦ À§ÇØ doubleÀ» »ç¿ë. Á¦°ö ¿¬»ê Á¤¼ö·Î º¯È¯ÇÒ ¶§ÀÌÈÄ ¼Ò¼öÁ¡ ÀÌÇÏ´Â ¹ö¸².
+	// ì œê³± ì—°ì‚°ì˜ ì •í™•ë„ë¥¼ ìœ„í•´ doubleì„ ì‚¬ìš©. ì œê³± ì—°ì‚° ì •ìˆ˜ë¡œ ë³€í™˜í•  ë•Œì´í›„ ì†Œìˆ˜ì  ì´í•˜ëŠ” ë²„ë¦¼.
 	double pitchToFreq(char);
 	int rhythmToLength(char);
 
-	// °èÀÌ¸§À» ¸®ÅÏÇÏ±â À§ÇØ¼­ °ü¸®ÇÏ´Â 
+	// ê³„ì´ë¦„ì„ ë¦¬í„´í•˜ê¸° ìœ„í•´ì„œ ê´€ë¦¬í•˜ëŠ” 
 	int oct = 0;
 	char pit[4] = { '\0' , '\0' , '\0' , '\0' };
 
-	// ³ëÆ®°¡ »ç¿ë°¡´É ÇÑ »óÅÂÀÎÁö(¿¡·¯°¡ ¾ø´Â »óÅÂÀÎÁö) °Ë»çÇÑ´Ù.
-	// ¹®Á¦°¡ ÀÖ´Ù¸é throw
+	// ë…¸íŠ¸ê°€ ì‚¬ìš©ê°€ëŠ¥ í•œ ìƒíƒœì¸ì§€(ì—ëŸ¬ê°€ ì—†ëŠ” ìƒíƒœì¸ì§€) ê²€ì‚¬í•œë‹¤.
+	// ë¬¸ì œê°€ ìžˆë‹¤ë©´ throw
 	void validate();
 };
 

@@ -68,5 +68,7 @@ public:
 		// eop는 사용되고 있는 Paper의 개수가 아니라, 마지막 page의 끝을 나타내는 정수이므로 1을 뺀다.
 		eop = count - 1;
 	}
+
+	int BPM = 200;
 };
 
