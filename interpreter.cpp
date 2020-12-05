@@ -220,7 +220,7 @@ void Interpreter::executeModeCommand(string command) {
                 else {
                     rhythm = command[i];
 
-                    if (command[i + 1] == '.') {
+                    if (command[i + 1] == '.' || command[i + 1] == '*') {
                         dot = true;
                         i += 2;
                     } 
