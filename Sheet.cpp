@@ -41,6 +41,7 @@ Note& Sheet::replace(const char* pitch, const char* rhythm) {
 }
 
 
+// ===================================== Paper Å¬·¡½º =============================================
 
 Paper::Paper() {
 	for (int i = 0; i < 48; ++i) {
