@@ -10,15 +10,15 @@ Sheet::Sheet() {
 
 // 현재 커서와 페이지 위치에 주어진 계이름과 리듬의 노트를 만들어서 삽입한다.
 Note& Sheet::insert(const char* pitch, const char* rhythm) {
-	Note* new_note = new Note{ pitch, rhythm };
+	Note new_note = Note{ pitch, rhythm };
 
-	paper_array[page.getPosition()].insert(cursor.getPosition(), *new_note);
+	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
 
 	// 추가 이후에 한 칸 뒤로 이동한다.
 	cursor.cr();
 
 	// 연주를 위해 노트를 리턴한다.
-	return *new_note;
+	return new_note;
 }
 
 void Sheet::remove(int number) {
@@ -29,15 +29,15 @@ void Sheet::remove(int number) {
 }
 
 Note& Sheet::replace(const char* pitch, const char* rhythm) {
-	Note* new_note = new Note{ pitch, rhythm };
+	Note new_note = Note{ pitch, rhythm };
 
-	paper_array[page.getPosition()].insert(cursor.getPosition(), *new_note);
+	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
 
 	// 변경 이후에 한 칸 뒤로 이동한다.
 	cursor.cr();
 
 	// 연주를 위해 노트를 리턴한다.
-	return *new_note;
+	return new_note;
 }
 
 
@@ -61,6 +61,9 @@ void Paper::insert(int idx, Note note) {
 		}
 		// 만약 해당 인덱스에 임자가 있다면 한 칸씩 뒤로 미루고 넣는다.
 		else {
+			// 마지막 자리의 노트는 할당 해제.
+			note_array[47].release();
+
 			for (int i = 47; i >= idx; --i) {
 				note_array[i] = note_array[i - 1];
 			}
