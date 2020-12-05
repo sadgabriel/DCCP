@@ -9,8 +9,6 @@ public:
 	bool is_rest;		// 
 
 	Note() {
-		freq = 0;
-		length = 0;
 		is_NULL = true;
 		is_rest = true;
 	}
@@ -45,13 +43,6 @@ public:
 	const char* getPitch() { return pitch; }	// 노트의 계이름을 리턴한다.
 	const char* getRhythm() { return rhythm; }	// 노트의 박자를 리턴한다.
 
-	int freq;		// 노트에 해당하는 음의 주파수를 정수로 저장.
-	int length;		// 노트에 해당하는 음에 길이를 정수로 저장.
-	
-
 private:
-	// 노트가 사용가능 한 상태인지(에러가 없는 상태인지) 검사한다.
-	// 문제가 있다면 throw
-	void validate();
 };
 
