@@ -1,5 +1,6 @@
 #include "Player.h"
 
+// 시트의 현재 페이지의 현재 커서의 노트 하나를 Beep한다.
 void Player::playNote(Sheet& sheet) {
 	Note playing_note = sheet.getNote();
 
@@ -18,7 +19,7 @@ void Player::playNote(Note& note, int BPM) {
 
 }
 
-int Player::convertToFreq(char* pitch) {
+int Player::convertToFreq(const char* pitch) {
 	// length of pitch is 4
 	// pitch[0] = 계이름 C~B
 	// pitch[1] = 옥타브
@@ -69,7 +70,7 @@ int Player::convertToFreq(char* pitch) {
 
 
 
-int Player::convertToMilisec(char* rhythm, int BPM) {
+int Player::convertToMilisec(const char* rhythm, int BPM) {
 	
 	// <인수 rhythm>
 	// rhythm[0] = 1
@@ -152,7 +153,7 @@ int Player::convertToMilisec(char* rhythm, int BPM) {
 		unit_bit_num += temp_unit_bit_num;		/// 1/16박자를 단위로한 음의 길이
 	} // end for
 	
-	  // 이제 BPM을 고려해서 실제로 사용되는 밀리초 단위의 정수를 구한다.
+	// 이제 BPM을 고려해서 실제로 사용되는 밀리초 단위의 정수를 구한다.
 	// unit_bit_milisec은 프로그램에서 최소인 1/16박자의 실제 시간이다.
 	
 	// BPM은 노래의 속도를 나타내는 척도이다.

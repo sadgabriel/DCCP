@@ -10,7 +10,7 @@ void SaveLoader::save(std::string filename, Sheet& mysheet) {
     for (int page_idx = 0; page_idx < 30; page_idx++) {
         for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
             Note mynote = mysheet.getNote();
-            output << mynote.getPitch() << ':' << mynote.getRyhthm() << std::endl;
+            output << mynote.getPitch() << ':' << mynote.getRhythm() << std::endl;
             mysheet.cursor.cr();
         }
         mysheet.cursor.cs();
