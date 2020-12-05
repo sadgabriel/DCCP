@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Note.h"
+#include <vector>
 
 
 /// <summary>
