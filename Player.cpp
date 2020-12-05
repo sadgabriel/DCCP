@@ -1,36 +1,14 @@
 #include "Player.h"
 
-void Player::playNote(const Sheet& sheet) {
+void Player::playNote(Sheet& sheet) {
+	Note playing_note = sheet.getNote();
 
-	page.ps();
-	int end_page = 1;
-
-	for (int i = 0; i < end_page; ++i) {
-		cursor.cs();
-
-		for (int j = 0; j < 48; ++j) {
-
-			system("cls");
-			printer.print(octave, cursor, page, sheet);
-			sheet.getNote().beep();
-			if (j != 47) {
-				cursor.cr();
-			}
-		}
-
-		if (i != end_page) {
-			page.pr();
-		}
+	if (playing_note.is_NULL == true) {
+		// do nothing
 	}
-
-	// 재생이 끝나면 악보의 처음으로 돌아간다. 도담록:처음이 아니라 커서 있던곳으로 가면 안되용?
-	// 남현우: 그러면 안됩니다. 그렇게 하려면 커서의 기존 위치를 저장해야 정수형으로 저장해야 합니다.
-	// 정수형을 저장하려면 4바이트가 필요합니다, 하지만 그러면 저희는 메모리를 아껴써야합니다.
-	// 1234
-	page.ps();
-	cursor.cs();
-	system("cls");
-	printer.print(octave, cursor, page, sheet);
+	else {
+		Beep(convertToFreq(playing_note.pitch), convertToMilisec(playing_note.rhythm, sheet.BPM));
+	}
 }
 
 
@@ -81,16 +59,19 @@ int Player::convertToFreq(char* pitch) {
 	else throw; // ERROR
 
 }
+
+
+
+
 int Player::convertToMilisec(char* rhythm, int BPM) {
+	
+	// <인수 rhythm>
 	// rhythm[0] = 1
 	// rhythm[1] = /
 	// rhythm[2] = 4	(ex)
 	// rhythm[3] = '\0' OR 6 when rhythm is 1/16. 점 음표라면 '*'이다.
 	// rhythm[4] = '\0'
-	
 
-	//						  1/1   1/2   1/4   1/8   1/16
-	bool rhythm_array[5] = { false,false,false,false,false };
 
 	// rhythm[0] = 1, rhythm[1] = / 이라고 가정.
 	char temp1 = rhythm[2];	// 박자가 몇개의 단위 비트로 이루어져 있는지 판단하기 위해서.
@@ -103,15 +84,77 @@ int Player::convertToMilisec(char* rhythm, int BPM) {
 	else is_dotted = false;
 
 
-	// 박자를 단위 비트 수로 전환한다.
-	int unit_bit_num;	// 단위 비트 수
+	//						  1/1   1/2   1/4   1/8   1/16
+	bool rhythm_array[5] = { false,false,false,false,false };
 
-	if ((temp1 == '1') && (temp2 != '6')) {
+
+	if ((temp1 == '1') && (temp2 != '6')) {	// 1/1
+		rhythm_array[0] = true;
+		if (is_dotted == true) {			// 1/1*
+			rhythm_array[1] = true;
+		}
 	}
-	if(temp1 == '2')
-	if(temp1 == '4')
-	if(temp1 == '8')
+	else if (temp1 == '2') {		//	1/2
+		rhythm_array[1] = true;
+		if (is_dotted == true) {	//	1/2*
+			rhythm_array[2] = true;
+		}
+	}
+	else if (temp1 == '4') {
+		rhythm_array[2] = true;
+		if (is_dotted == true) {
+			rhythm_array[3] = true;
+		}
+	}
+	else if (temp1 == '8') {		// 1/8
+		rhythm_array[3] = true;
+		if (is_dotted == true) {
+			rhythm_array[4] = true;
+		}
+	}
+	else if ((temp1 == '1') && (temp2 == '6')) {	// 1/16
+		rhythm_array[4] = true;
+		if (is_dotted == true) {
+			// This NEVER happen. 1/16*은 프로그램에서 지원하지 않는다.
+			throw;
+		}
+	}
+	// rhythm_array가 모두 false라면 이상한 상황.
+	else {
+		throw;
+	}
 
-	if(temp2 == '6')
-	if(temp2 == '*')
+	
+	// 바로 위의 조건문 뭉치에서 구한 rhythm_array를 정수로 전환한다.
+	int unit_bit_num = 0;		// 1단위 비트는 1/16박자이다. 1/32/박자는 현재의 구현에서 존재할 수도, 필요도 없다.
+
+	// rhythm_array에서 루프를 돈다.
+	for (int i = 0; i < 5; ++i) {
+		int temp_unit_bit_num = 1;
+
+		// REMEMBER Remember remember
+		//							  1/1   1/2   1/4   1/8   1/16
+		//	bool rhythm_array[5] = { false,false,false,false,false };
+		//							  16     8     4     2     1  <== 단위 박자의 개수
+		if (rhythm_array[i] == true) {
+			// 2의 거듭제곱 구하기. unit_bit_num는 2^(4-i)가 된다.
+			for (int j = 0; j < (4 - i); ++j) {
+				temp_unit_bit_num *= 2;
+			}
+		}
+
+		unit_bit_num += temp_unit_bit_num;		/// 1/16박자를 단위로한 음의 길이
+	} // end for
+	
+	  // 이제 BPM을 고려해서 실제로 사용되는 밀리초 단위의 정수를 구한다.
+	// unit_bit_milisec은 프로그램에서 최소인 1/16박자의 실제 시간이다.
+	
+	// BPM은 노래의 속도를 나타내는 척도이다.
+	// BPM의 정의는 1/4박자의 분당 개수이다. 따라서 클수록 같은 시간에 많은 박자(비트)의 음표가 연주된다.
+	// BPM = 1분 / (1/4박자의 실제시간)으로 구한다. (1/4박자의 실제시간) = 1분 / BPM
+
+	int unit_bit_milisec = 60000 / (BPM * 4);		// 1분은 6만 밀리초이다.
+													// 1/16박자가 단위이므로 (1/16박자의 실제시간) = 1분 / (BPM * 4).
+
+	int real_length = unit_bit_num * unit_bit_milisec;	// 음표의 길이는 (단위의 개수) * (단위시간)
 }

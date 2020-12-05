@@ -3,11 +3,16 @@
 
 
 class Player{
+
 public:
-	void playNote(const Sheet&);
+	void playNote(Sheet&);
+
+
 private:
+
 	// pitch to freq
 	int convertToFreq(char*);
+
 	// rhythm to milisec
 	int convertToMilisec(char*, int BPM);
 };

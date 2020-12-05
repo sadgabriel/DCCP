@@ -1,7 +1,7 @@
 #include "Note.h"
 
 
-
+// 동적 할당 해제
 Note::Note(int octave, char pitch, char rhythm) {
 	// 문자 처리는 서브 함수에 맡김.
 
