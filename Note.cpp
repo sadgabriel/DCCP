@@ -1,5 +1,8 @@
 #include "Note.h"
 
+
+
+
 //안_녕
 // 문자열로 받은 계이름과 박자를 주파수와 밀리초 단위 길이로 환산하여 노트 객체를 생성한다.
 Note::Note(int octave, char pitch, char rhythm) {

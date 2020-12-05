@@ -1,6 +1,5 @@
 #include "interpreter.h"
 
-// testing
 void removeSpace(string& str) {
     // remove all space character from string.
 
@@ -144,6 +143,12 @@ void Interpreter::executeKeywordCommand(string command) {
     else if (command == "play") {
         // play the music
         myplayer.play(octave, mycursor, mypage, mysheet, myprinter);
+    }
+    else if (command.find("save") == 0) {
+        mysaveloader.save(command.substr(4), mysheet);
+    }
+    else if (command.find("load") == 0) {
+        mysaveloader.load(command.substr(4), mysheet);
     }
     
 
