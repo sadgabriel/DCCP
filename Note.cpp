@@ -9,7 +9,7 @@ Note::Note(int octave, char pitch, char rhythm) {
 	oct += octave;
 	
 	// 길이 
-	length = rhythmToLength(rhythm) * 150;		//bpm = 200으로 가정
+	length = rhythmToLength(rhythm) * lengthPerBit;
 
 	// 만약 음표라면  
 	if (pitch == '@' || pitch == ',') {
@@ -37,11 +37,17 @@ Note::Note(int octave, char pitch, char rhythm) {
 
 // 정수로 생성될 경우 바로 주파수와 길이에 대입한다.
 Note::Note(int f, int l) {
+	// 길이가 0이면 NULL_Note이다.
+	if (l == 0) {
+		is_NULL = true;
+	}
+	// 주파수가 0이면 음표이다.
+	if (f == 0) {
+		is_rest = true;
+	}
+
 	freq = f;
 	length = l;
-
-	is_NULL = false;
-	is_rest = false; // 음표 여부 체크
 }
 
 void Note::beep() {
@@ -224,17 +230,24 @@ const char* Note::getLength() {
 	}
 	// 음표가 아니라면
 	else {
-		if (length == 1) {
+		int bit_num = length / lengthPerBit;
+
+		// 원래는 1/4박자를 기준으로 1로 해야하지만, 내부 구현은 가장 작은 1/8을 기준으로 하고 있다.
+		// 추후 수정 필요
+		if (bit_num == 1) {
 			return "1/8\0";
 		}
-		else if (length == 2) {
+		else if (bit_num == 2) {
 			return "1/4\0";
 		}
-		else if (length == 4) {
+		else if (bit_num == 4) {
 			return "1/2\0";
 		}
-		else if (length == 8) {
+		else if (bit_num == 8) {
 			return "1/1\0";
+		}
+		else {
+			return "ERR\0";
 		}
 	}
 }

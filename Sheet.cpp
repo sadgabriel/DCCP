@@ -32,7 +32,7 @@ Paper::Paper() {
 }
 
 void Paper::insert(int idx, Note note) {
-	// 만약 가득찬 페이지라면 아무것도 하지 않는다. 다른걸 지우고 해라.
+	// 만약 가득찬 페이지라면 아무것도 하지 않는다. 다른걸 지우고 함.
 	if (isFull() == true) {
 		//do nothing
 	}
