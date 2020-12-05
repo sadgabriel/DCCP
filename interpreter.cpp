@@ -168,13 +168,16 @@ void Interpreter::executeKeywordCommand(string command) {
 
         for (int page_idx = 0; page_idx < 30; page_idx++) {
             for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
+                if (mysheet.getNote().is_NULL) goto END_LOOP;
                 myplayer.playNote(mysheet);
                 mysheet.cursor.cr();
+                system("cls");
                 myprinter.print(octave, mysheet);
             }
             mysheet.cursor.cs();
             mysheet.page.pr();
         }
+        END_LOOP:
 
         mysheet.cursor.cs();
         mysheet.page.ps();

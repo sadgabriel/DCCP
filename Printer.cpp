@@ -78,7 +78,13 @@ void Printer::print(int octave, Sheet& sheet) {
 	// 첫번째 박자 Rhythm 줄
 	std::cout << std::setw(8) << std::left << "Rhythm";			//	8
 	for (int i = 0; i < 24; ++i) {								//	24*4 = 96
-		std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
+		if (sheet.getNote().is_NULL) {
+			std::cout << "    ";
+		}
+		else {
+			std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
+		}
+		sheet.cursor.cr();
 	}
 	std::cout << std::endl;
 
@@ -155,7 +161,13 @@ void Printer::print(int octave, Sheet& sheet) {
 	// 두번째 박자 Rhythm 줄
 	std::cout << std::setw(8) << std::left << "Rhythm";	//	8
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
-		std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
+		if (sheet.getNote().is_NULL) {
+			std::cout << "    ";
+		}
+		else {
+			std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
+		}
+		sheet.cursor.cr();
 	}
 	std::cout << std::endl;
 
