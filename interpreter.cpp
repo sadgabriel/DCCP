@@ -58,50 +58,50 @@ void Interpreter::executeKeywordCommand(string command) {
     // cursor command
     if (command == "cs") {
         // cursor start
-        mycursor.cs();
+        mysheet.cursor.cs();
     }
     else if (command == "ce") {
         // cursor end
-        mycursor.ce();
+        mysheet.cursor.ce();
     }
     else if (command.find("ct") == 0) {
         // cursor to n
-        mycursor.ct(stoi(command.substr(2)));
+        mysheet.cursor.ct(stoi(command.substr(2)));
     }
     else if (command.find("cr") == 0) {
         // cursor right
         // cursor right n
-        if (command.size() == 2) mycursor.cr();
-        else mycursor.cr(stoi(command.substr(2)));
+        if (command.size() == 2) mysheet.cursor.cr();
+        else mysheet.cursor.cr(stoi(command.substr(2)));
     }
     else if (command.find("cl") == 0) {
         // cursor left
         // cursor left n
-        if (command.size() == 2) mycursor.cl();
-        else mycursor.cl(stoi(command.substr(2)));
+        if (command.size() == 2) mysheet.cursor.cl();
+        else mysheet.cursor.cl(stoi(command.substr(2)));
     }
 
     // page command
     
     else if (command == "pr") {
         // page right
-        mypage.pr();
+        mysheet.page.pr();
     }
     else if (command == "pl") {
         // page left
-        mypage.pl();
+        mysheet.page.pl();
     }
     else if (command.find("pt") == 0) {
         // page to n
-        mypage.pt(stoi(command.substr(2)));
+        mysheet.page.pt(stoi(command.substr(2)));
     }
     else if (command == "ps") {
         // page start
-        mypage.ps();
+        mysheet.page.ps();
     }
     else if (command == "pe") {
         // page end
-        mypage.pe();
+        mysheet.page.pe();
     }
 
 
@@ -183,10 +183,16 @@ void Interpreter::executeModeCommand(string command) {
                     rhythm = c;
 
                     if (mode == INSERT) {
-                        mysheet.insert(myconverter.convertToPitch(pitch, temp_octave), myconverter.convertToRhythm(rhythm, temp_octave));
+                        Note note = mysheet.insert(myconverter.convertToPitch(pitch, temp_octave),
+                            myconverter.convertToRhythm(rhythm, temp_octave));
+
+                        myplayer.playNote(note);
                     }
                     else if (mode == REPLACE) {
-                            mysheet.replace(myconverter.convertToPitch(pitch), myconverter.convertToRhythm(rhythm));
+                        Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave), 
+                            myconverter.convertToRhythm(rhythm, temp_octave));
+
+                        myplayer.playNote(note);
                     }
                     phase--;
                 }

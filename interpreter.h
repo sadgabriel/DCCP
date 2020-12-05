@@ -24,8 +24,6 @@ public:
     void execute(string command);
     void print();
 private:
-    Cursor mycursor;
-    Page mypage;
     Sheet mysheet;
     Printer myprinter;
     Player myplayer;
