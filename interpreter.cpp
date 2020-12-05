@@ -168,7 +168,7 @@ void Interpreter::executeKeywordCommand(string command) {
 
         for (int page_idx = 0; page_idx < 30; page_idx++) {
             for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
-                myplayer.playNote(mysheet.getNote());
+                myplayer.playNote(mysheet);
                 mysheet.cursor.cr();
                 myprinter.print(octave, mysheet);
             }
@@ -233,13 +233,13 @@ void Interpreter::executeModeCommand(string command) {
                         Note note = mysheet.insert(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
 
-                        myplayer.playNote(note);
+                        myplayer.playNote(note, mysheet.BPM);
                     }
                     else if (mode == REPLACE) {
                         Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
 
-                        myplayer.playNote(note);
+                        myplayer.playNote(note, mysheet.BPM);
                     }
                     phase--;
                 }
