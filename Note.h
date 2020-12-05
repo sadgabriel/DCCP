@@ -9,13 +9,20 @@ public:
 		freq = 0;
 		length = 0;
 		is_NULL = true;
-		is_rest = false;
+		is_rest = true;
 	}
 	Note(int, char, char);
+
+	Note(const char*, const char*);
+
 	Note(int, int);
+	// 각각의 생성자 모두에서 모든 멤버 변수가 초기화된다.
 
 	bool is_NULL;
 	bool is_rest;
+
+	char* pitch;
+	char* rhythm;
 
 	int freq;		// 노트에 해당하는 음의 주파수를 정수로 저장.
 	int length;		// 노트에 해당하는 음에 길이를 정수로 저장.
@@ -26,8 +33,6 @@ public:
 
 	int lengthPerBit = 150;		// Bpm은 200으로 가정한다.
 
-
-
 private:
 	// 제곱 연산의 정확도를 위해 double을 사용. 제곱 연산 정수로 변환할 때이후 소수점 이하는 버림.
 	double pitchToFreq(char);
@@ -36,5 +41,9 @@ private:
 	// 계이름을 리턴하기 위해서 관리하는 
 	int oct = 0;
 	char pit[4] = { '\0' , '\0' , '\0' , '\0' };
+
+	// 노트가 사용가능 한 상태인지(에러가 없는 상태인지) 검사한다.
+	// 문제가 있다면 throw
+	void validate();
 };
 

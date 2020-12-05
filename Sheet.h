@@ -1,8 +1,10 @@
 #pragma once
 #include "Note.h"
-#include "Cursor.h"
-#include "Page.h"
+
 #include <vector>
+
+#include "cursor.h"
+#include "page.h"
 
 class Paper {
 private:
@@ -33,13 +35,38 @@ private:
 
 public:
 	Sheet();
-	// 연산자
-	void insert(Cursor&, Page&, Note);
-	void remove(Cursor&, Page&, int number = 1);
-	void replace(Cursor&, Page&, Note);
-	Note getNote(int pos, Page& page) {
-		return paper_array[page.getPosition()].getNote(pos);
+
+	// 커서와 페이지 객체
+	Cursor my_cursor;
+	Page my_page;
+
+
+	// -------- 연산자 --------
+	// 현재 커서와 페이지 위치에 주어진 계이름과 리듬의 노트를 만들어서 삽입한다.
+	void insert(const char*, const char*);		// 노트를 악보에 삽입할 때 마다 소리가 나야한다.
+	// 현재 커서와 페이지에 있는 노트를 삭제한다.
+	void remove(int number = 1);
+	// 현재 커서와 페이지에 있는 노트를 주어진 계이름과 리듬의 노트로 변경한다.
+	void replace(const char*, const char*);
+
+	// 현재 커서와 페이지 위치에 있는 노트를 리턴한다.
+	Note getNote() {
+		return paper_array[my_page.getPosition()].getNote(my_cursor.getPosition());
+	}
+
+	// 페이지의 끝이 어디인지 알려주는 정수
+	int eop = 0;	// End Of Page
+	// 추가 구현이 필요하다.
+
+	void update_eop() {
+		int count = 0;
+		// 사용되고 있는 Paper의 개수 만큼 i를 증가시킨다.
+		while (paper_array[count].isEmpty() != true) {
+			++count;
+		}
+
+		// eop는 사용되고 있는 Paper의 개수가 아니라, 마지막 page의 끝을 나타내는 정수이므로 1을 뺀다.
+		eop = count - 1;
 	}
 };
-
 

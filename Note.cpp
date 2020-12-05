@@ -41,9 +41,16 @@ Note::Note(int f, int l) {
 	if (l == 0) {
 		is_NULL = true;
 	}
+	else {
+		is_NULL = false;
+	}
+
 	// 주파수가 0이면 음표이다.
 	if (f == 0) {
 		is_rest = true;
+	}
+	else {
+		is_rest = false;
 	}
 
 	freq = f;
@@ -80,7 +87,7 @@ double Note::pitchToFreq(char pitch) {
 	}
 	if (pitch == 'd') {
 		pit[0] = 'D'; 
-		pit[1] = '#';
+		pit[2] = '#';
 		return 38.8909;
 	}
 	if (pitch == 'c') {
@@ -93,7 +100,7 @@ double Note::pitchToFreq(char pitch) {
 	}
 	if (pitch == 'g') { 
 		pit[0] = 'F'; 
-		pit[1] = '#';
+		pit[2] = '#';
 		return 46.2493;
 	}
 	if (pitch == 'b') { 
@@ -102,7 +109,7 @@ double Note::pitchToFreq(char pitch) {
 	}
 	if (pitch == 'h') {  
 		pit[0] = 'G'; 
-		pit[1] = '#';
+		pit[2] = '#';
 		return 51.9130;
 	}
 	if (pitch == 'n') { 
@@ -111,7 +118,7 @@ double Note::pitchToFreq(char pitch) {
 	}
 	if (pitch == 'j') {
 		pit[0] = 'A';
-		pit[1] = '#';
+		pit[2] = '#';
 		return 58.2705;
 	}
 	if (pitch == 'm') { 
@@ -208,7 +215,7 @@ int Note::rhythmToLength(char rhythm) {
 
 const char* Note::getPitch() {
 
-	// 널노트라면
+	// 널노트라면, 만약 노트가 널이 동시에 음표라면 널이 먼저 처리된다.
 	if (is_NULL == true) {
 		return "NUL\0";
 	}
@@ -249,5 +256,22 @@ const char* Note::getLength() {
 		else {
 			return "ERR\0";
 		}
+	}
+}
+
+
+
+// 노트가 사용가능 한 상태인지(에러가 없는 상태인지) 검사한다.
+// 문제가 있다면 throw. 예외 처리를 기대하진 않는다.
+void Note::validate() {
+	if (freq >= 0) throw;
+	if (length >= 0) throw;
+
+	if (is_NULL == true) {
+		if (length != 0) throw;
+	}
+
+	if (is_rest == true) {
+		if (freq != 0) throw;
 	}
 }
