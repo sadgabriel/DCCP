@@ -204,28 +204,40 @@ void Interpreter::executeModeCommand(string command) {
 
         int phase = 0, temp_octave;
         char pitch = '\0', rhythm = '\0';
+        bool dot = false;
 
-        for (char c : command) {
+        int i = 0;
+        while (i < command.size()) {
             if (phase == 0) {
-                pitch = c;
+                pitch = command[i];
                 phase++;
                 temp_octave = octave;
+                i++;
             }
             else if (phase == 1) {
-                if (c == '+') temp_octave++;
-                else if (c == '-') temp_octave--;
+                if (command[i] == '+') temp_octave++;
+                else if (command[i] == '-') temp_octave--;
                 else {
-                    rhythm = c;
+                    rhythm = command[i];
+
+                    if (command[i + 1] == '.') {
+                        dot = true;
+                        i += 2;
+                    } 
+                    else {
+                        dot = false;
+                        i++;
+                    }
 
                     if (mode == INSERT) {
                         Note note = mysheet.insert(myconverter.convertToPitch(pitch, temp_octave),
-                            myconverter.convertToRhythm(rhythm, temp_octave));
+                            myconverter.convertToRhythm(rhythm, dot));
 
                         myplayer.playNote(note);
                     }
                     else if (mode == REPLACE) {
-                        Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave), 
-                            myconverter.convertToRhythm(rhythm, temp_octave));
+                        Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
+                            myconverter.convertToRhythm(rhythm, dot));
 
                         myplayer.playNote(note);
                     }
@@ -233,5 +245,8 @@ void Interpreter::executeModeCommand(string command) {
                 }
             }
         }
+
+
+
     }
 }
