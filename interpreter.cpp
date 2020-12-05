@@ -13,17 +13,32 @@ void removeSpace(string& str) {
 }
 
 void Interpreter::print() {
-    //myprinter.print(octave, mycursor, mypage, mysheet);
+    myprinter.print(mysheet);
 }
 
 void Interpreter::execute(string command) {
 
-    if (command[0] == ':') {
-        executeKeywordCommand(command.substr(1));
+    bool error = false;
+
+    try {
+        if (command[0] == ':') {
+            executeKeywordCommand(command.substr(1));
+        }
+        else {
+            executeModeCommand(command);
+        }
     }
-    else {
-        executeModeCommand(command);
+    catch (...) {
+        error = true;
     }
+    
+    system("cls");
+    print();
+
+    if (error) cout << "Invalid Command" << endl;
+
+    cout << "Enter Your Command. " << endl;
+
 }
 
 void Interpreter::executeKeywordCommand(string command) {
@@ -141,8 +156,22 @@ void Interpreter::executeKeywordCommand(string command) {
         exit(0);
     }
     else if (command == "play") {
-        // play the music
-        // myplayer.play(octave, mycursor, mypage, mysheet, myprinter);
+
+        mysheet.cursor.cs();
+        mysheet.page.ps();
+
+        for (int page_idx = 0; page_idx < 30; page_idx++) {
+            for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
+                myplayer.playNote(mysheet.getNote());
+                mysheet.cursor.cr();
+                myprinter.print(mysheet);
+            }
+            mysheet.cursor.cs();
+            mysheet.page.pr();
+        }
+
+        mysheet.cursor.cs();
+        mysheet.page.ps();
     }
     else if (command.find("save") == 0) {
         mysaveloader.save(command.substr(4), mysheet);

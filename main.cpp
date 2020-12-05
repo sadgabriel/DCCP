@@ -3,12 +3,11 @@
 int main() {
 	Interpreter interpreter;
 
+	system("cls");
+	interpreter.print();
+	cout << "Enter Your Command. " << endl;
+
 	while (true) {
-		system("cls");
-
-		interpreter.print();
-		cout << "Enter Your Command. " << endl;
-
 		std::string enter;
 		getline(cin, enter);
 
