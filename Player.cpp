@@ -1,5 +1,6 @@
 #include "Player.h"
 
+// 시트의 현재 페이지의 현재 커서의 노트 하나를 Beep한다.
 void Player::playNote(Sheet& sheet) {
 	Note playing_note = sheet.getNote();
 
@@ -12,7 +13,7 @@ void Player::playNote(Sheet& sheet) {
 }
 
 
-int Player::convertToFreq(char* pitch) {
+int Player::convertToFreq(const char* pitch) {
 	// length of pitch is 4
 	// pitch[0] = 계이름 C~B
 	// pitch[1] = 옥타브
@@ -63,7 +64,7 @@ int Player::convertToFreq(char* pitch) {
 
 
 
-int Player::convertToMilisec(char* rhythm, int BPM) {
+int Player::convertToMilisec(const char* rhythm, int BPM) {
 	
 	// <인수 rhythm>
 	// rhythm[0] = 1

@@ -11,9 +11,9 @@ public:
 private:
 
 	// pitch to freq
-	int convertToFreq(char*);
+	int convertToFreq(const char*);
 
 	// rhythm to milisec
-	int convertToMilisec(char*, int BPM);
+	int convertToMilisec(const char*, int BPM);
 };
 
