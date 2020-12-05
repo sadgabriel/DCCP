@@ -130,22 +130,22 @@ const char* Converter::convertToRhythm(char command_rhythm, bool is_dotted) {
 	//char rhythm[5];
 	char* rhythm = new char[5];
 
-	if (command_rhythm == 'z') {
+	if (command_rhythm == 'z' or command_rhythm == 'a') {
 		rhythm[0] = '1';
 		rhythm[1] = '/';
 		rhythm[2] = '1';
 	}
-	else if (command_rhythm == 'x') {
+	else if (command_rhythm == 'x' or command_rhythm == 's') {
 		rhythm[0] = '1';
 		rhythm[1] = '/';
 		rhythm[2] = '2';
 	}
-	else if (command_rhythm == 'c') {
+	else if (command_rhythm == 'c' or command_rhythm == 'd') {
 		rhythm[0] = '1';
 		rhythm[1] = '/';
 		rhythm[2] = '4';
 	}
-	else if (command_rhythm == 'v') {
+	else if (command_rhythm == 'v' or command_rhythm == 'f') {
 		rhythm[0] = '1';
 		rhythm[1] = '/';
 		rhythm[2] = '8';
@@ -158,9 +158,13 @@ const char* Converter::convertToRhythm(char command_rhythm, bool is_dotted) {
 	}
 	else throw;
 
+	if (command_rhythm == 'a' or command_rhythm == 's' or command_rhythm == 'd' or command_rhythm == 'f') {
+		is_dotted = true;
+	}
+
 	// 점음표
 	// 1/16*은 없다.
-	if ((is_dotted == true) && (command_rhythm == 'b')) {
+	if ((is_dotted == true) && (command_rhythm != 'b')) {
 		rhythm[3] = '*';
 	}
 
