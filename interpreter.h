@@ -10,6 +10,7 @@
 #include "Sheet.h"
 #include "Printer.h"
 #include "Player.h"
+#include "SaveLoader.h"
 
 #define INSERT 0
 #define REPLACE 1
@@ -27,6 +28,7 @@ private:
     Sheet mysheet;
     Printer myprinter;
     Player myplayer;
+    SaveLoader mysaveloader;
 
     int mode = INSERT;
     int octave = 4; // 1 ~ 7

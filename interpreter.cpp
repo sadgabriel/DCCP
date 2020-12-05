@@ -1,6 +1,5 @@
 #include "interpreter.h"
 
-// testing
 void removeSpace(string& str) {
     // remove all space character from string.
 
@@ -145,13 +144,19 @@ void Interpreter::executeKeywordCommand(string command) {
         // play the music
         myplayer.play(octave, mycursor, mypage, mysheet, myprinter);
     }
+    else if (command.find("save") == 0) {
+        mysaveloader.save(command.substr(4), mysheet);
+    }
+    else if (command.find("load") == 0) {
+        mysaveloader.load(command.substr(4), mysheet);
+    }
     
 
     // user-defined keyword handle
     else if (user_commands.find(command) != user_commands.end()) {
         execute((*user_commands.find(command)).second);
     }
-    else throw(invalid_argument("the user-defined command not exists"));
+    
 
 
 }
