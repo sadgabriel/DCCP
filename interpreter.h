@@ -11,6 +11,7 @@
 #include "Printer.h"
 #include "Player.h"
 #include "SaveLoader.h"
+#include "Converter.h"
 
 #define INSERT 0
 #define REPLACE 1
@@ -29,6 +30,7 @@ private:
     Printer myprinter;
     Player myplayer;
     SaveLoader mysaveloader;
+    Converter myconverter;
 
     int mode = INSERT;
     int octave = 4; // 1 ~ 7

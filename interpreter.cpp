@@ -13,7 +13,7 @@ void removeSpace(string& str) {
 }
 
 void Interpreter::print() {
-    myprinter.print(octave, mycursor, mypage, mysheet);
+    //myprinter.print(octave, mycursor, mypage, mysheet);
 }
 
 void Interpreter::execute(string command) {
@@ -136,13 +136,13 @@ void Interpreter::executeKeywordCommand(string command) {
         else octave = 0;
     }
 
-    // program
+    // system
     else if (command == "exit") {
         exit(0);
     }
     else if (command == "play") {
         // play the music
-        myplayer.play(octave, mycursor, mypage, mysheet, myprinter);
+        // myplayer.play(octave, mycursor, mypage, mysheet, myprinter);
     }
     else if (command.find("save") == 0) {
         mysaveloader.save(command.substr(4), mysheet);
@@ -163,10 +163,9 @@ void Interpreter::executeKeywordCommand(string command) {
 
 void Interpreter::executeModeCommand(string command) {
     if (mode == REMOVE) {
-        mysheet.remove(mycursor, mypage, stoi(command));
+        mysheet.remove(stoi(command));
     }
     else {
-        vector<Note> notes;
 
         int phase = 0, temp_octave;
         char pitch = '\0', rhythm = '\0';
@@ -182,23 +181,15 @@ void Interpreter::executeModeCommand(string command) {
                 else if (c == '-') temp_octave--;
                 else {
                     rhythm = c;
-                    notes.push_back(Note(temp_octave, pitch, rhythm));
+
+                    if (mode == INSERT) {
+                        mysheet.insert(myconverter.convertToPitch(pitch, temp_octave), myconverter.convertToRhythm(rhythm, temp_octave));
+                    }
+                    else if (mode == REPLACE) {
+                            mysheet.replace(myconverter.convertToPitch(pitch), myconverter.convertToRhythm(rhythm));
+                    }
                     phase--;
                 }
-            }
-        }
-
-        
-        if (mode == INSERT) {
-            for (const Note& note : notes) {
-                mysheet.insert(mycursor, mypage, note);
-                mycursor.cr();
-            }
-        }
-        else if (mode == REPLACE) {
-            for (const Note& note : notes) {
-               mysheet.replace(mycursor, mypage, note);
-               mycursor.cr();
             }
         }
     }
