@@ -87,5 +87,6 @@ void Paper::remove(int idx) {
 }
 
 void Paper::replace(int idx, Note note) {
+	note_array[idx].release();
 	note_array[idx] = note;
 }
