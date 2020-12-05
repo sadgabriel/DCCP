@@ -9,6 +9,8 @@ public:
 	bool is_rest;		// 
 
 	Note() {
+		pitch = nullptr;
+		rhythm = nullptr;
 		is_NULL = true;
 		is_rest = true;
 	}
