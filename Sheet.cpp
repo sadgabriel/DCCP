@@ -8,18 +8,27 @@ Sheet::Sheet() {
 	}
 }
 
-void Sheet::insert(Cursor& cursor, Page& page, Note note) {
-	paper_array[page.getPosition()].insert(cursor.getPosition(), note);
+// 현재 커서와 페이지 위치에 주어진 계이름과 리듬의 노트를 만들어서 삽입한다.
+void Sheet::insert(const char* pitch, const char* rhythm) {
+	Note new_note{ pitch, rhythm };
+
+	paper_array[my_page.getPosition()].insert(my_cursor.getPosition(), new_note);
+
+	// 추가 이후에 한 칸 뒤로 이동한다.
+	my_cursor.cr();
 }
 
-void Sheet::remove(Cursor& cursor, Page& page, int number) {
+void Sheet::remove(int number) {
 	for (int i = 0; i < number; ++i) {
-		paper_array[page.getPosition()].remove(cursor.getPosition());
+		// 페이퍼 클래스에서 자동으로 노트들을 땡겨준다.
+		paper_array[my_page.getPosition()].remove(my_cursor.getPosition());
 	}
 }
 
-void Sheet::replace(Cursor& cursor, Page& page, Note note) {
-	paper_array[page.getPosition()].insert(cursor.getPosition(), note);
+void Sheet::replace(const char* pitch, const char* rhythm) {
+	Note new_note{ pitch, rhythm };
+
+	paper_array[my_page.getPosition()].insert(my_cursor.getPosition(), new_note);
 }
 
 
@@ -32,7 +41,7 @@ Paper::Paper() {
 }
 
 void Paper::insert(int idx, Note note) {
-	// 만약 가득찬 페이지라면 아무것도 하지 않는다. 다른걸 지우고 함.
+	// 만약 가득찬 페이지라면 아무것도 하지 않는다. 다른걸 지우고 해야 함.
 	if (isFull() == true) {
 		//do nothing
 	}

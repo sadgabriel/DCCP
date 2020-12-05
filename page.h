@@ -12,5 +12,5 @@ public:
     void pe();
     int getPosition();
 private:
-    int pos;
+    int pos = 0;
 };
