@@ -1,10 +1,14 @@
 #pragma once
 #include "Sheet.h"
-#include "Printer.h"
 
 
 class Player{
 public:
-	void play(int, Cursor&, Page&, Sheet&, Printer&);
+	void playNote(const Sheet&);
+private:
+	// pitch to freq
+	int convertToFreq(char*);
+	// rhythm to milisec
+	int convertToMilisec(char*, int BPM);
 };
 
