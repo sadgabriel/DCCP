@@ -31,7 +31,7 @@ void Sheet::remove(int number) {
 Note Sheet::replace(const char* pitch, const char* rhythm) {
 	Note new_note = Note{ pitch, rhythm };
 
-	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
+	paper_array[page.getPosition()].replace(cursor.getPosition(), new_note);
 
 	// 변경 이후에 한 칸 뒤로 이동한다.
 	cursor.cr();
