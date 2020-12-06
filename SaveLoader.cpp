@@ -9,6 +9,7 @@ void SaveLoader::save(std::string filename, Sheet& mysheet) {
     mysheet.page.ps();
     for (int page_idx = 0; page_idx < 30; page_idx++) {
         for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
+            if (mysheet.getNote().is_NULL) goto END_LOOP1;
             Note mynote = mysheet.getNote();
             output << mynote.getPitch() << ':' << mynote.getRhythm() << std::endl;
             mysheet.cursor.cr();
@@ -16,9 +17,12 @@ void SaveLoader::save(std::string filename, Sheet& mysheet) {
         mysheet.cursor.cs();
         mysheet.page.pr();
     }
+    END_LOOP1:
 
     mysheet.cursor.cs();
     mysheet.page.ps();
+
+    output.close();
 }
 
 void SaveLoader::load(std::string filename, Sheet& mysheet) {
@@ -39,17 +43,41 @@ void SaveLoader::load(std::string filename, Sheet& mysheet) {
     for (int page_idx = 0; page_idx < 30; page_idx++) {
         for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
             getline(input, line);
+            if (line.size() == 0) goto END_LOOP2;
             int delimiter_pos = line.find(':');
 
             pitch = line.substr(0, delimiter_pos);
             rhythm = line.substr(delimiter_pos+1);
             
-            mysheet.insert(pitch.c_str(), rhythm.c_str());
+            char *pitch_pointer = new char[4];
+            char *rhythm_pointer = new char[5];
+
+            for (int i = 0; i < 4; i++) {
+                pitch_pointer[i] = '\0';
+            }
+
+            for (int i = 0; i < pitch.size(); i++) {
+                pitch_pointer[i] = pitch[i];
+            }
+
+            for (int i = 0; i < 5; i++) {
+                rhythm_pointer[i] = '\0';
+            }
+
+            for (int i = 0; i < rhythm.size(); i++) {
+                rhythm_pointer[i] = pitch[i];
+            }
+
+            mysheet.insert(pitch_pointer, rhythm_pointer);
         }
         mysheet.cursor.cs();
         mysheet.page.pr();
     }
 
+    END_LOOP2:
+
     mysheet.cursor.cs();
     mysheet.page.ps();
+
+    input.close();
 }
