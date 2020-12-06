@@ -187,7 +187,12 @@ void Interpreter::executeKeywordCommand(string command) {
         mysheet.page.ps();
     }
     else if (command.find("save") == 0) {
-        mysaveloader.save(command.substr(4), mysheet);
+        std::string filename;
+
+        if (command.size() == 4)
+            filename = command.substr(4);
+        
+        mysaveloader.save(filename, mysheet);
     }
     else if (command.find("load") == 0) {
         mysaveloader.load(command.substr(4), mysheet);

@@ -1,4 +1,5 @@
 #include "Sheet.h"
+#include <cassert>
 
 
 Sheet::Sheet() {

@@ -3,7 +3,14 @@
 
 
 void SaveLoader::save(std::string filename, Sheet& mysheet) {
+    static std::string old_filename = std::string("default.txt");
+
+    if (filename.size() == 0) filename = old_filename;
+
+    old_filename = filename;
+
     std::ofstream output(filename, std::ios::out);
+    
     
     mysheet.cursor.cs();
     mysheet.page.ps();
