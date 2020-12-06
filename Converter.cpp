@@ -115,6 +115,8 @@ const char* Converter::convertToPitch(char command_pitch, int oct) {
 	if (command_pitch == '0') { oct += 2; pitch[0] = 'D'; pitch[2] = '#'; }
 	if (command_pitch == 'p') { oct += 2; pitch[0] = 'E'; }
 
+	if (command_pitch == '\0') throw(1);
+
 	// int to char. 옥타브 입력
 	pitch[1] = '0' + oct;
 
@@ -156,7 +158,7 @@ const char* Converter::convertToRhythm(char command_rhythm, bool is_dotted) {
 		rhythm[2] = '1';
 		rhythm[3] = '6';
 	}
-	else throw;
+	else throw(1);
 
 	if (command_rhythm == 'a' or command_rhythm == 's' or command_rhythm == 'd' or command_rhythm == 'f') {
 		is_dotted = true;
