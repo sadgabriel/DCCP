@@ -7,6 +7,9 @@ void Player::playNote(Sheet& sheet) {
 	if (playing_note.is_NULL == true) {
 		// do nothing
 	}
+	else if (playing_note.is_rest == true) {
+		Beep(0, convertToMilisec(playing_note.rhythm, sheet.BPM));
+	}
 	else {
 		Beep(convertToFreq(playing_note.pitch), convertToMilisec(playing_note.rhythm, sheet.BPM));
 	}
