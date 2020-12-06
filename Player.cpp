@@ -63,7 +63,7 @@ int Player::convertToFreq(const char* pitch) {
 		else frequency = (int)58.2705;
 	}
 	else if (tune == 'B') frequency = (int)61.7354;
-	else throw; // ERROR
+	else throw(1); // ERROR
 
 	// 옥타브넣기
 	// 옥타브 - 1 만큼 2의 거듭하기
@@ -130,12 +130,12 @@ int Player::convertToMilisec(const char* rhythm, int BPM) {
 		rhythm_array[4] = true;
 		if (is_dotted == true) {
 			// This NEVER happen. 1/16*은 프로그램에서 지원하지 않는다.
-			throw;
+			throw(1);
 		}
 	}
 	// rhythm_array가 모두 false라면 이상한 상황.
 	else {
-		throw;
+		throw(1);
 	}
 
 	

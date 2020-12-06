@@ -28,6 +28,9 @@ void Interpreter::execute(string command) {
             executeModeCommand(command);
         }
     }
+    catch (int a) {
+        error = true;
+    }
     catch (...) {
         error = true;
     }
@@ -211,6 +214,8 @@ void Interpreter::executeModeCommand(string command) {
 
         unsigned int i = 0;
         while (i < command.size()) {
+            pitch = '\0'; rhythm = '\0';
+
             if (phase == 0) {
                 pitch = command[i];
                 phase++;
