@@ -13,7 +13,7 @@ void removeSpace(string& str) {
 }
 
 void Interpreter::print() {
-    myprinter.print(octave, mysheet);
+    myprinter.print(octave, mode, mysheet);
 }
 
 void Interpreter::execute(string command) {
@@ -56,6 +56,7 @@ void Interpreter::executeKeywordCommand(string command) {
 
         while (i < command.size() && command[i] != ' ') {
             A.append(command.substr(i, 1));
+            i++;
         }
 
         if (i < command.size())
@@ -175,7 +176,7 @@ void Interpreter::executeKeywordCommand(string command) {
                 myplayer.playNote(mysheet);
                 mysheet.cursor.cr();
                 system("cls");
-                myprinter.print(octave, mysheet);
+                myprinter.print(octave, mode, mysheet);
             }
             mysheet.cursor.cs();
             mysheet.page.pr();

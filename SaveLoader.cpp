@@ -65,7 +65,7 @@ void SaveLoader::load(std::string filename, Sheet& mysheet) {
             }
 
             for (int i = 0; i < rhythm.size(); i++) {
-                rhythm_pointer[i] = pitch[i];
+                rhythm_pointer[i] = rhythm[i];
             }
 
             mysheet.insert(pitch_pointer, rhythm_pointer);
