@@ -25,16 +25,16 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	}
 
 	if (mode == 0) {
-		std::cout << std::setw(8) << std::left << " Insert";
+		std::cout << std::setw(14) << std::left << " Mode: Insert";
 	}
 	else if (mode == 1) {
-		std::cout << std::setw(8) << std::left  << " Replace";
+		std::cout << std::setw(14) << std::left  << " Mode: Replace";
 	}
 	else {
-		std::cout << std::setw(8) << std::left  << " Remove";
+		std::cout << std::setw(14) << std::left  << " Mode: Remove";
 	}
 
-	for (int i = 0; i < 80; ++i) {
+	for (int i = 0; i < 74; ++i) {
 		std::cout << '-';
 	}
 	std::cout << std::endl;
