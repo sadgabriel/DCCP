@@ -82,9 +82,14 @@ void Paper::remove(int idx) {
 	}
 	// 그렇지 않고 만약 무언가 있다면
 	else {
-		// release라고 빈 null노트를 넣어서 삭제 처리한다.
+		// release하고 앞의 노트들를 땡겨 넣어서 삭제 처리한다.
 		note_array[idx].release();
-		note_array[idx] = Note();
+
+		for (int i = idx; i < 47; ++i) {
+			note_array[i] = note_array[i + 1];
+		}
+		// 마지막 노트에는 NULL노트를 넣는다.
+		note_array[47] = Note();
 
 		--size;	// 사이즈 감소
 	}
