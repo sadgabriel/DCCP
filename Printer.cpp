@@ -1,7 +1,10 @@
 #include "Printer.h"
 
-void Printer::print(int octave, Sheet& sheet) {
-	
+void Printer::print(int octave, int mode, Sheet& sheet) {
+	// 0 삽입 모드
+	// 1 대체 모드
+	// 2 삭제 모드
+
 	// 줄0
 	// 타이틀
 	std::cout << "DCCP: DGIST Convergence Composer Program" << std::endl;
@@ -17,7 +20,21 @@ void Printer::print(int octave, Sheet& sheet) {
 	std::cout << "Current Octave: ";								//	16
 	std::cout << std::setw(2) << std::left << octave;				//	2
 
-	for (int i = 0; i < 91; ++i) {
+	for (int i = 0; i < 3; ++i) {
+		std::cout << '-';
+	}
+
+	if (mode == 0) {
+		std::cout << std::setw(8) << std::left << " Insert";
+	}
+	else if (mode == 1) {
+		std::cout << std::setw(8) << std::left  << " Replace";
+	}
+	else {
+		std::cout << std::setw(8) << std::left  << " Remove";
+	}
+
+	for (int i = 0; i < 80; ++i) {
 		std::cout << '-';
 	}
 	std::cout << std::endl;
@@ -211,4 +228,10 @@ void Printer::setCursorPosition(int x, int y) {
 	std::cout.flush();
 	COORD coord = { (SHORT)x, (SHORT)y };
 	SetConsoleCursorPosition(hOut, coord);
+}
+
+// 콘솔의 지정된 좌표에 txt를 업데이트 한다.
+void Printer::printAt(const char* txt, int x, int y) {
+	setCursorPosition(x, y);
+	std::cout << txt;
 }

@@ -105,6 +105,9 @@ const char* Converter::convertToPitch(char command_pitch, int oct) {
 		oct += 1;
 		pitch[0] = 'B';
 	}
+	if ((command_pitch == '@') || (command_pitch == ',' )) {
+		pitch[0] = command_pitch;		// 쉼표는 그대로 넣어서 노트의 생성자에서 처리.
+	}
 
 
 	if (command_pitch == 'i') { oct += 2; pitch[0] = 'C'; }
