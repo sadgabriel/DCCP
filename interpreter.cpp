@@ -56,6 +56,7 @@ void Interpreter::executeKeywordCommand(string command) {
 
         while (i < command.size() && command[i] != ' ') {
             A.append(command.substr(i, 1));
+            i++;
         }
 
         if (i < command.size())
