@@ -21,8 +21,9 @@ using namespace std;
 
 class Interpreter {
 public:
+    Interpreter();
     void execute(string command);
-    void print();
+
 private:
     Sheet mysheet;
     Printer myprinter;
@@ -30,12 +31,23 @@ private:
     SaveLoader mysaveloader;
     Converter myconverter;
 
+    vector<string> outputs;
+
     int mode = INSERT;
     int octave = 4; // 1 ~ 7
 
     map<string, string> user_commands;
 
-    void executeKeywordCommand(string command);
-    void executeModeCommand(string command);
+    // insert string into outputs
+    void pushOutput(string); 
+    void pushOutput(const char*);
 
+    // print mysheet and outputs on screen
+    void printSheet(); 
+
+    // execute command as keyword command. if fails, return 1. else 0.
+    int executeKeywordCommand(string command);
+
+    // execute command as Mode command (insert, remove, replace). if fails, throw 1.
+    void executeModeCommand(string command);
 };

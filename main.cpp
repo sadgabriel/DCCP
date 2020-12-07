@@ -1,19 +1,13 @@
 #include "interpreter.h"
 
 int main() {
-	Interpreter interpreter;
-
-	system("cls");
-	interpreter.print();
-	cout << "Enter Your Command. " << endl;
+	Interpreter* interpreter = new Interpreter;
 
 	while (true) {
-		std::string enter;
-		getline(cin, enter);
+		std::string command;
+		getline(cin, command);
 
-		interpreter.execute(enter);
+		interpreter->execute(command);
 	}
-
-
 	return 0;
 }
