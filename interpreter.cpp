@@ -77,27 +77,27 @@ void Interpreter::executeKeywordCommand(string command) {
     // cursor command
     if (command == "cs") {
         // cursor start
-        mysheet.cursor.cs();
+        mysheet.cs();
     }
     else if (command == "ce") {
         // cursor end
-        mysheet.cursor.ce();
+        mysheet.ce();
     }
     else if (command.find("ct") == 0) {
         // cursor to n
-        mysheet.cursor.ct(stoi(command.substr(2)));
+        mysheet.ct(stoi(command.substr(2)));
     }
     else if (command.find("cr") == 0) {
         // cursor right
         // cursor right n
         if (command.size() == 2) mysheet.cursor.cr();
-        else mysheet.cursor.cr(stoi(command.substr(2)));
+        else mysheet.cr(stoi(command.substr(2)));
     }
     else if (command.find("cl") == 0) {
         // cursor left
         // cursor left n
         if (command.size() == 2) mysheet.cursor.cl();
-        else mysheet.cursor.cl(stoi(command.substr(2)));
+        else mysheet.cl(stoi(command.substr(2)));
     }
 
     // page command
@@ -229,8 +229,8 @@ void Interpreter::executeModeCommand(string command) {
                 i++;
             }
             else if (phase == 1) {
-                if (command[i] == '+') temp_octave++;
-                else if (command[i] == '-') temp_octave--;
+                if (command[i] == '+') temp_octave++, i++;
+                else if (command[i] == '-') temp_octave--, i++;
                 else {
                     rhythm = command[i];
 
@@ -260,6 +260,7 @@ void Interpreter::executeModeCommand(string command) {
             }
         }
 
+        if (phase == 1) throw(1);
     
 
     }

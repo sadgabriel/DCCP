@@ -1,4 +1,5 @@
 #include "Sheet.h"
+#include <cassert>
 
 
 Sheet::Sheet() {
@@ -31,13 +32,41 @@ void Sheet::remove(int number) {
 Note Sheet::replace(const char* pitch, const char* rhythm) {
 	Note new_note = Note{ pitch, rhythm };
 
-	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
+	paper_array[page.getPosition()].replace(cursor.getPosition(), new_note);
 
 	// 변경 이후에 한 칸 뒤로 이동한다.
 	cursor.cr();
 
 	// 연주를 위해 노트를 리턴한다.
 	return new_note;
+}
+
+// ---------커서 관련 함수
+
+void Sheet::cs() {
+	cursor.cs();
+}
+
+void Sheet::ce() {
+	for (int i = 0; i < 48; i++) {
+		if (paper_array[page.getPosition()].getNote(i).is_NULL) {
+			ct(i);
+			break;
+		}
+	}
+}
+
+void Sheet::ct(int num) {
+	cursor.ct(num);
+}
+
+
+void Sheet::cr(int num = 1) {
+	cursor.cr(num);
+}
+
+void Sheet::cl(int num = 1) {
+	cursor.cl(num);
 }
 
 
