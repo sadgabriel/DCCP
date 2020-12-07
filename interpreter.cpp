@@ -49,7 +49,7 @@ void Interpreter::execute(string command) {
         }
     }
     catch (...) {
-        pushOutput("Invalid input.");
+        pushOutput("Invalid command.");
     }
 
     printSheet();
@@ -83,10 +83,62 @@ int Interpreter::executeKeywordCommand(string command) {
 
 
     removeSpace(command);
+    // user-defined keyword handle
+    if (user_commands.find(command) != user_commands.end()) {
+        execute((*user_commands.find(command)).second);
+    }
 
     // pre-defined keyword handle
+
+    // system
+    else if (command == "exit") {
+        exit(0);
+    }
+    else if (command == "play") {
+        int original_cursor_pos = mysheet.cursor.getPosition();
+        int original_page_pos = mysheet.page.getPosition();
+
+        mysheet.cs();
+        mysheet.ps();
+
+        for (int page_idx = 0; page_idx < 30; page_idx++) {
+            mysheet.pt(page_idx);
+            for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
+                mysheet.ct(cursor_idx);
+                if (mysheet.getNote().is_NULL) goto END_LOOP;
+
+                myplayer.playNote(mysheet);
+
+                printSheet();
+            }
+            mysheet.cs();
+        }
+    END_LOOP:
+
+        mysheet.ct(original_cursor_pos);
+        mysheet.pt(original_page_pos);
+    }
+    else if (command.find("save") == 0) {
+        string filename;
+
+        if (command.size() >= 5) {
+            filename = command.substr(4);
+            removeSpace(filename);
+        }
+
+        mysaveloader.save(filename, mysheet);
+    }
+    else if (command.find("load") == 0) {
+        if (command.size() >= 5) {
+            string filename = command.substr(4);
+            removeSpace(filename);
+            mysaveloader.load(command.substr(4), mysheet);
+        }
+        else throw(1);
+    }
+
     // cursor command
-    if (command == "cs") {
+    else if (command == "cs") {
         // cursor start
         mysheet.cs();
     }
@@ -171,56 +223,6 @@ int Interpreter::executeKeywordCommand(string command) {
     else if (command.find("BPM") == 0) {
         int new_bpm = stoi(command.substr(3));
         if (new_bpm > 0) mysheet.BPM = new_bpm;
-    }
-
-    // system
-    else if (command == "exit") {
-        exit(0);
-    }
-    else if (command == "play") {
-
-        mysheet.cs();
-        mysheet.ps();
-
-        for (int page_idx = 0; page_idx < 30; page_idx++) {
-            mysheet.pt(page_idx);
-            for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
-                mysheet.ct(cursor_idx);
-                if (mysheet.getNote().is_NULL) goto END_LOOP;
-
-                myplayer.playNote(mysheet);
-
-                printSheet();
-            }
-            mysheet.cs();
-        }
-    END_LOOP:
-
-        mysheet.cs();
-        mysheet.ps();
-    }
-    else if (command.find("save") == 0) {
-        string filename;
-
-        if (command.size() >= 5) {
-            filename = command.substr(4);
-            removeSpace(filename);
-        }
-
-        mysaveloader.save(filename, mysheet);
-    }
-    else if (command.find("load") == 0) {
-        if (command.size() >= 5) {
-            string filename = command.substr(4);
-            removeSpace(filename);
-            mysaveloader.load(command.substr(4), mysheet);
-        }
-        else throw(1);
-    }
-
-    // user-defined keyword handle
-    else if (user_commands.find(command) != user_commands.end()) {
-        execute((*user_commands.find(command)).second);
     }
     else {
         return 1;
