@@ -257,9 +257,10 @@ void Interpreter::executeModeCommand(string command) {
                 else {
                     rhythm = command[i];
 
-                    if (command.size() > i + 2 && (command[i + 1] == '.' || command[i + 1] == '*')) {
+                    if (command.size() > i + 1 && (command[i + 1] == '.' || command[i + 1] == '*')) {
                         dot = true;
                         i++;
+                        
                     }
                     else {
                         dot = false;

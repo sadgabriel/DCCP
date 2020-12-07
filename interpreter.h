@@ -4,6 +4,7 @@
 #include <string>
 #include <stdexcept>
 #include <map>
+#include <cassert>
 
 #include "cursor.h"
 #include "page.h"
