@@ -41,7 +41,7 @@ Note Sheet::replace(const char* pitch, const char* rhythm) {
 	return new_note;
 }
 
-// ---------커서 관련 함수
+// --------- 커서 관련 함수
 
 void Sheet::cs() {
 	cursor.cs();
@@ -61,14 +61,46 @@ void Sheet::ct(int num) {
 }
 
 
-void Sheet::cr(int num = 1) {
-	cursor.cr(num);
+void Sheet::cr(int num) {
+	if (cursor.getPosition() == 47 && page.getPosition() < 29) {
+		page.pr();
+		cursor.cs();
+	}
+	else {
+		cursor.cr(num);
+	}
 }
 
-void Sheet::cl(int num = 1) {
-	cursor.cl(num);
+void Sheet::cl(int num) {
+	if (cursor.getPosition() == 0 && page.getPosition() > 0) {
+		page.pl();
+		cursor.ce();
+	}
+	else {
+		cursor.cl(num);
+	}
 }
 
+// --------- 페이지 관련 함수
+
+void Sheet::ps() {
+	page.ps();
+}
+
+void Sheet::pe() {
+	page.pe();
+}
+
+void Sheet::pt(int num) {
+	page.pt(num);
+}
+
+void Sheet::pr(int num) {
+	page.pr(num);
+}
+void Sheet::pl(int num) {
+	page.pl(num);
+}
 
 // ===================================== Paper 클래스 =============================================
 

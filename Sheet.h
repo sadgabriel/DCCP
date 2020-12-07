@@ -75,8 +75,14 @@ public:
 	void cs();
 	void ce();
 	void ct(int);
-	void cr(int);
-	void cl(int);
+	void cr(int = 1);
+	void cl(int = 1);
 
+	// 페이지 관련 함수
+	void ps();
+	void pe();
+	void pt(int);
+	void pr(int = 1);
+	void pl(int = 1);
 };
 

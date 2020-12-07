@@ -101,37 +101,38 @@ int Interpreter::executeKeywordCommand(string command) {
     else if (command.find("cr") == 0) {
         // cursor right
         // cursor right n
-        if (command.size() == 2) mysheet.cursor.cr();
+        if (command.size() == 2) mysheet.cr();
         else mysheet.cr(stoi(command.substr(2)));
     }
     else if (command.find("cl") == 0) {
         // cursor left
         // cursor left n
-        if (command.size() == 2) mysheet.cursor.cl();
+        if (command.size() == 2) mysheet.cl();
         else mysheet.cl(stoi(command.substr(2)));
     }
 
     // page command
-    // -----------------------------to be modified
-    else if (command == "pr") {
+    else if (command.find("pr") == 0) {
         // page right
-        mysheet.page.pr();
+        if (command.size() == 2) mysheet.pr();
+        else mysheet.pr(stoi(command.substr(2)));
     }
-    else if (command == "pl") {
+    else if (command.find("pl") == 0) {
         // page left
-        mysheet.page.pl();
+        if (command.size() == 2) mysheet.pl();
+        else mysheet.pl(stoi(command.substr(2)));
     }
     else if (command.find("pt") == 0) {
         // page to n
-        mysheet.page.pt(stoi(command.substr(2)));
+        mysheet.pt(stoi(command.substr(2)));
     }
     else if (command == "ps") {
         // page start
-        mysheet.page.ps();
+        mysheet.ps();
     }
     else if (command == "pe") {
         // page end
-        mysheet.page.pe();
+        mysheet.pe();
     }
 
 
@@ -179,10 +180,10 @@ int Interpreter::executeKeywordCommand(string command) {
     else if (command == "play") {
 
         mysheet.cs();
-        mysheet.page.ps(); // -----------------------------to be modified
+        mysheet.ps();
 
         for (int page_idx = 0; page_idx < 30; page_idx++) {
-            mysheet.page.pt(page_idx); // -----------------------------to be modified
+            mysheet.pt(page_idx);
             for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
                 mysheet.ct(cursor_idx);
                 if (mysheet.getNote().is_NULL) goto END_LOOP;
@@ -196,7 +197,7 @@ int Interpreter::executeKeywordCommand(string command) {
     END_LOOP:
 
         mysheet.cs();
-        mysheet.page.ps(); // -----------------------------to be modified
+        mysheet.ps();
     }
     else if (command.find("save") == 0) {
         string filename;
