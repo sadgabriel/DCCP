@@ -41,6 +41,34 @@ Note Sheet::replace(const char* pitch, const char* rhythm) {
 	return new_note;
 }
 
+// ---------커서 관련 함수
+
+void Sheet::cs() {
+	cursor.cs();
+}
+
+void Sheet::ce() {
+	for (int i = 0; i < 48; i++) {
+		if (paper_array[page.getPosition()].getNote(i).is_NULL) {
+			ct(i);
+			break;
+		}
+	}
+}
+
+void Sheet::ct(int num) {
+	cursor.ct(num);
+}
+
+
+void Sheet::cr(int num = 1) {
+	cursor.cr(num);
+}
+
+void Sheet::cl(int num = 1) {
+	cursor.cl(num);
+}
+
 
 // ===================================== Paper 클래스 =============================================
 
