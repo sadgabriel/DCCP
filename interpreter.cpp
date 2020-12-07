@@ -229,8 +229,8 @@ void Interpreter::executeModeCommand(string command) {
                 i++;
             }
             else if (phase == 1) {
-                if (command[i] == '+') temp_octave++;
-                else if (command[i] == '-') temp_octave--;
+                if (command[i] == '+') temp_octave++, i++;
+                else if (command[i] == '-') temp_octave--, i++;
                 else {
                     rhythm = command[i];
 
