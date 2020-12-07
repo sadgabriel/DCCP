@@ -70,5 +70,13 @@ public:
 	}
 
 	int BPM = 200;
+
+	// 커서 관련 함수
+	void cs();
+	void ce();
+	void ct(int);
+	void cr(int);
+	void cl(int);
+
 };
 
