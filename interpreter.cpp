@@ -103,7 +103,7 @@ int Interpreter::executeKeywordCommand(string command) {
 
         for (int page_idx = 0; page_idx < 30; page_idx++) {
             for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
-                if (mysheet.getNote().is_NULL) goto END_LOOP;
+                if (mysheet.getNote()->is_NULL) goto END_LOOP;
 
                 myplayer.playNote(mysheet);
 
@@ -267,12 +267,12 @@ void Interpreter::executeModeCommand(string command) {
                     }
 
                     
-                    Note note;
+                    Note* note;
                     if (mode == INSERT) {
                         note = mysheet.insert(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
                     }
-                    else if (mode == REPLACE) {
+                    else{
                         note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
                     }

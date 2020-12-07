@@ -19,7 +19,7 @@ public:
 	Note(const char*, const char*);
 
 	// 노트 소멸자
-	~Note() {}
+	~Note() { release(); }
 
 	// 동적 할당 해제
 	void release() {
