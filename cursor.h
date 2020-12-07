@@ -12,13 +12,13 @@ public:
     void ce();
 
     // 커서 위치 p로 점프 cursor to n
-    void ct(int num);
+    void ct(int);
 
     // 오른쪽 n칸 이동 cursor right, cr
-    void cr(int num = 1);
+    void cr(int = 1);
 
     // 왼쪽으로 n칸 이동 cursor left. cl
-    void cl(int num = 1);
+    void cl(int = 1);
 
     // 커서의 위치를 리턴한다.
     int getPosition();

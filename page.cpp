@@ -1,14 +1,14 @@
 #include "page.h"
 
+// 페이지의 책임.
+// pos가 0과 29 사이에 있게 한다.
 
-void Page::pr() {
-    if (pos < 29) pos++;
-    else pe();
+void Page::ps() {
+    pos = 0;
 }
 
-void Page::pl() {
-    if (pos > 0) pos--;
-    else ps();
+void Page::pe() {
+    pos = 29;
 }
 
 void Page::pt(int num) {
@@ -17,12 +17,12 @@ void Page::pt(int num) {
     else pos = num;
 }
 
-void Page::ps() {
-    pos = 0;
+void Page::pr(int num) {
+    pt(pos + num);
 }
 
-void Page::pe() {
-    pos = 29;
+void Page::pl(int num) {
+    pt(pos - num);
 }
 
 int Page::getPosition() {

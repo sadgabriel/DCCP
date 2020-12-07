@@ -41,13 +41,14 @@ Note Sheet::replace(const char* pitch, const char* rhythm) {
 	return new_note;
 }
 
-// ---------커서 관련 함수
+// --------- 커서 관련 함수
 
 void Sheet::cs() {
 	cursor.cs();
 }
 
 void Sheet::ce() {
+	// 첫 null로.
 	for (int i = 0; i < 48; i++) {
 		if (paper_array[page.getPosition()].getNote(i).is_NULL) {
 			ct(i);
@@ -61,14 +62,50 @@ void Sheet::ct(int num) {
 }
 
 
-void Sheet::cr(int num = 1) {
-	cursor.cr(num);
+void Sheet::cr(int num) {
+	// 커서가 끝에 있으면 다음 페이지로 넘어가고 커서를 0으로 옮긴다.
+	if (cursor.getPosition() == 47 && page.getPosition() < 29) {
+		page.pr();
+		cursor.cs();
+	}
+	else {
+		cursor.cr(num);
+	}
 }
 
-void Sheet::cl(int num = 1) {
-	cursor.cl(num);
+void Sheet::cl(int num) {
+	// 커서가 처음에 있으면 이전 페이지로 넘어가고 커서를 29로 옮긴다.
+	if (cursor.getPosition() == 0 && page.getPosition() > 0) {
+		page.pl();
+		cursor.ce();
+	}
+	else {
+		cursor.cl(num);
+	}
 }
 
+// --------- 페이지 관련 함수
+
+void Sheet::ps() {
+	page.ps();
+}
+
+void Sheet::pe() {
+	page.pe();
+}
+
+void Sheet::pt(int num) {
+	// 페이지 이동 후 커서를 첫 null로 옮긴다.
+	page.pt(num);
+	ce();
+}
+
+void Sheet::pr(int num) {
+	pt(page.getPosition() + num);
+}
+void Sheet::pl(int num) {
+	pt(page.getPosition() - num);
+}
 
 // ===================================== Paper 클래스 =============================================
 
