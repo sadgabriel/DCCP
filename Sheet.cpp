@@ -1,4 +1,5 @@
 #include "Sheet.h"
+#include <cassert>
 
 
 Sheet::Sheet() {
@@ -31,7 +32,7 @@ void Sheet::remove(int number) {
 Note Sheet::replace(const char* pitch, const char* rhythm) {
 	Note new_note = Note{ pitch, rhythm };
 
-	paper_array[page.getPosition()].insert(cursor.getPosition(), new_note);
+	paper_array[page.getPosition()].replace(cursor.getPosition(), new_note);
 
 	// 변경 이후에 한 칸 뒤로 이동한다.
 	cursor.cr();
@@ -40,6 +41,66 @@ Note Sheet::replace(const char* pitch, const char* rhythm) {
 	return new_note;
 }
 
+// --------- 커서 관련 함수
+
+void Sheet::cs() {
+	cursor.cs();
+}
+
+void Sheet::ce() {
+	for (int i = 0; i < 48; i++) {
+		if (paper_array[page.getPosition()].getNote(i).is_NULL) {
+			ct(i);
+			break;
+		}
+	}
+}
+
+void Sheet::ct(int num) {
+	cursor.ct(num);
+}
+
+
+void Sheet::cr(int num) {
+	if (cursor.getPosition() == 47 && page.getPosition() < 29) {
+		page.pr();
+		cursor.cs();
+	}
+	else {
+		cursor.cr(num);
+	}
+}
+
+void Sheet::cl(int num) {
+	if (cursor.getPosition() == 0 && page.getPosition() > 0) {
+		page.pl();
+		cursor.ce();
+	}
+	else {
+		cursor.cl(num);
+	}
+}
+
+// --------- 페이지 관련 함수
+
+void Sheet::ps() {
+	page.ps();
+}
+
+void Sheet::pe() {
+	page.pe();
+}
+
+void Sheet::pt(int num) {
+	page.pt(num);
+}
+
+void Sheet::pr(int num) {
+	page.pr(num);
+}
+void Sheet::pl(int num) {
+	page.pl(num);
+}
 
 // ===================================== Paper 클래스 =============================================
 

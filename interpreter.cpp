@@ -1,5 +1,6 @@
 #include "interpreter.h"
 
+
 void removeSpace(string& str) {
     // remove all space character from string.
 
@@ -12,39 +13,49 @@ void removeSpace(string& str) {
     }
 }
 
-void Interpreter::print() {
+Interpreter::Interpreter() {
+    printSheet();
+}
+
+void Interpreter::pushOutput(string str) {
+    outputs.push_back(str);
+}
+
+void Interpreter::pushOutput(const char* str) {
+    string s{ str };
+    pushOutput(s);
+}
+
+void Interpreter::printSheet() {
+    system("cls");
     myprinter.print(octave, mode, mysheet);
+    for (string output : outputs) {
+        cout << output << endl;
+    }
+    cout << endl << "Enter Your Command." << endl;
+
+    outputs.clear();
 }
 
 void Interpreter::execute(string command) {
 
-    bool error = false;
-
     try {
-        if (command[0] == ':') {
-            executeKeywordCommand(command.substr(1));
+        if (command[0] == ':' && executeKeywordCommand(command.substr(1))) {
+            throw(1);
         }
         else {
-            executeModeCommand(command);
+            if (executeKeywordCommand(command))
+                executeModeCommand(command);
         }
     }
-    catch (int a) {
-        error = true;
-    }
     catch (...) {
-        error = true;
+        pushOutput("Invalid input.");
     }
-    
-    system("cls");
-    print();
 
-    if (error) cout << "Invalid Command" << endl;
-
-    cout << "Enter Your Command. " << endl;
-
+    printSheet();
 }
 
-void Interpreter::executeKeywordCommand(string command) {
+int Interpreter::executeKeywordCommand(string command) {
     // define command
     if (command.find("define") == 0) {
         // define A B
@@ -61,66 +72,67 @@ void Interpreter::executeKeywordCommand(string command) {
 
         if (i < command.size())
             B.append(command.substr(i));
-        else throw(invalid_argument("error from define"));
+        else throw(1);
 
         if (user_commands.count(A) == 0)
             user_commands.insert(pair<string, string>(A, B));
-        else throw(invalid_argument("error from define"));
+        else throw(1);
 
-        return;
+        return 0;
     }
-    
+
 
     removeSpace(command);
-    
+
     // pre-defined keyword handle
     // cursor command
     if (command == "cs") {
         // cursor start
-        mysheet.cursor.cs();
+        mysheet.cs();
     }
     else if (command == "ce") {
         // cursor end
-        mysheet.cursor.ce();
+        mysheet.ce();
     }
     else if (command.find("ct") == 0) {
         // cursor to n
-        mysheet.cursor.ct(stoi(command.substr(2)));
+        mysheet.ct(stoi(command.substr(2)));
     }
     else if (command.find("cr") == 0) {
         // cursor right
         // cursor right n
-        if (command.size() == 2) mysheet.cursor.cr();
-        else mysheet.cursor.cr(stoi(command.substr(2)));
+        if (command.size() == 2) mysheet.cr();
+        else mysheet.cr(stoi(command.substr(2)));
     }
     else if (command.find("cl") == 0) {
         // cursor left
         // cursor left n
-        if (command.size() == 2) mysheet.cursor.cl();
-        else mysheet.cursor.cl(stoi(command.substr(2)));
+        if (command.size() == 2) mysheet.cl();
+        else mysheet.cl(stoi(command.substr(2)));
     }
 
     // page command
-    
-    else if (command == "pr") {
+    else if (command.find("pr") == 0) {
         // page right
-        mysheet.page.pr();
+        if (command.size() == 2) mysheet.pr();
+        else mysheet.pr(stoi(command.substr(2)));
     }
-    else if (command == "pl") {
+    else if (command.find("pl") == 0) {
         // page left
-        mysheet.page.pl();
+        if (command.size() == 2) mysheet.pl();
+        else mysheet.pl(stoi(command.substr(2)));
     }
     else if (command.find("pt") == 0) {
         // page to n
-        mysheet.page.pt(stoi(command.substr(2)));
+        mysheet.pt(stoi(command.substr(2)));
     }
     else if (command == "ps") {
         // page start
-        mysheet.page.ps();
+        mysheet.ps();
     }
     else if (command == "pe") {
         // page end
-        mysheet.page.pe();
+        mysheet.pe();
     }
 
 
@@ -167,45 +179,53 @@ void Interpreter::executeKeywordCommand(string command) {
     }
     else if (command == "play") {
 
-        mysheet.cursor.cs();
-        mysheet.page.ps();
+        mysheet.cs();
+        mysheet.ps();
 
         for (int page_idx = 0; page_idx < 30; page_idx++) {
+            mysheet.pt(page_idx);
             for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
+                mysheet.ct(cursor_idx);
                 if (mysheet.getNote().is_NULL) goto END_LOOP;
-                myplayer.playNote(mysheet);
-                mysheet.cursor.cr();
-                system("cls");
-                myprinter.print(octave, mode, mysheet);
-            }
-            mysheet.cursor.cs();
-            mysheet.page.pr();
-        }
-        END_LOOP:
 
-        mysheet.cursor.cs();
-        mysheet.page.ps();
+                myplayer.playNote(mysheet);
+
+                printSheet();
+            }
+            mysheet.cs();
+        }
+    END_LOOP:
+
+        mysheet.cs();
+        mysheet.ps();
     }
     else if (command.find("save") == 0) {
-        std::string filename;
+        string filename;
 
-        if (command.size() == 4)
+        if (command.size() >= 5) {
             filename = command.substr(4);
-        
+            removeSpace(filename);
+        }
+
         mysaveloader.save(filename, mysheet);
     }
     else if (command.find("load") == 0) {
-        mysaveloader.load(command.substr(4), mysheet);
+        if (command.size() >= 5) {
+            string filename = command.substr(4);
+            removeSpace(filename);
+            mysaveloader.load(command.substr(4), mysheet);
+        }
+        else throw(1);
     }
-    
 
     // user-defined keyword handle
     else if (user_commands.find(command) != user_commands.end()) {
         execute((*user_commands.find(command)).second);
     }
-    
-
-
+    else {
+        return 1;
+    }
+    return 0;
 }
 
 void Interpreter::executeModeCommand(string command) {
@@ -218,49 +238,48 @@ void Interpreter::executeModeCommand(string command) {
         char pitch = '\0', rhythm = '\0';
         bool dot = false;
 
-        unsigned int i = 0;
-        while (i < command.size()) {
-            //pitch = '\0'; rhythm = '\0';
-
+        for (unsigned int i = 0; i < command.size(); i++) {
             if (phase == 0) {
+                temp_octave = octave;
+                pitch = rhythm = '\0';
+
                 pitch = command[i];
                 phase++;
-                temp_octave = octave;
-                i++;
             }
             else if (phase == 1) {
-                if (command[i] == '+') temp_octave++;
-                else if (command[i] == '-') temp_octave--;
+                if (command[i] == '+') {
+                    temp_octave++;
+                }
+                else if (command[i] == '-') {
+                    temp_octave--;
+                }
                 else {
                     rhythm = command[i];
 
-                    if (command[i + 1] == '.' || command[i + 1] == '*') {
+                    if (command.size() > i + 2 && (command[i + 1] == '.' || command[i + 1] == '*')) {
                         dot = true;
-                        i += 2;
+                        i++;
                     }
                     else {
                         dot = false;
-                        i++;
                     }
 
+                    
+                    Note note;
                     if (mode == INSERT) {
-                        Note note = mysheet.insert(myconverter.convertToPitch(pitch, temp_octave),
+                        note = mysheet.insert(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
-
-                        myplayer.playNote(note, mysheet.BPM);
                     }
                     else if (mode == REPLACE) {
-                        Note note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
+                        note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
-
-                        myplayer.playNote(note, mysheet.BPM);
                     }
+
+                    myplayer.playNote(note, mysheet.BPM);
                     phase--;
                 }
             }
         }
-
-    
-
+        if (phase == 1) throw(1);
     }
 }

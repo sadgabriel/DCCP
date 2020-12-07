@@ -1,9 +1,17 @@
 #include "Printer.h"
 
+#define YELLOW 14
+#define GRAY 8
+#define CURSOR_COLOR YELLOW
+#define EMPTY_COLOR GRAY
+
 void Printer::print(int octave, int mode, Sheet& sheet) {
 	// 0 삽입 모드
 	// 1 대체 모드
 	// 2 삭제 모드
+
+
+
 
 	// 줄0
 	// 타이틀
@@ -20,10 +28,17 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	std::cout << "Current Octave: ";								//	16
 	std::cout << std::setw(2) << std::left << octave;				//	2
 
-	for (int i = 0; i < 3; ++i) {
-		std::cout << '-';
+	if (mode == 0) {//삽입 초록 10
+		printLine(3, 10);
+	}
+	if (mode == 1) {//대체 회색 8
+		printLine(3, 8);
+	}
+	if (mode == 2) {// 삭제 빨강 12
+		printLine(3, 12);
 	}
 
+	resetColor();
 	if (mode == 0) {
 		std::cout << std::setw(14) << std::left << " Mode: Insert";
 	}
@@ -34,8 +49,14 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 		std::cout << std::setw(14) << std::left  << " Mode: Remove";
 	}
 
-	for (int i = 0; i < 74; ++i) {
-		std::cout << '-';
+	if (mode == 0) {//삽입 초록 10
+		printLine(74, 10);
+	}
+	if (mode == 1) {//대체 회색 8
+		printLine(74, 8);
+	}
+	if (mode == 2) {// 삭제 빨강 12
+		printLine(74, 12);
 	}
 	std::cout << std::endl;
 
@@ -50,7 +71,9 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 
 	for (int i = 0; i < 24; ++i) {						//	24*4 = 96
 		if (i == cursor_pos) {
+			setColor(CURSOR_COLOR);
 			std::cout << "V   ";
+			resetColor();
 		}
 		else {
 			std::cout << "    ";
@@ -65,7 +88,9 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	// 첫번째 Order 순서 줄
 	std::cout << std::setw(8) << std::left << "Order";	//	8
 	for (int i = 0; i < 24; ++i) {						//	24*4 = 96
+		if (i == cursor_pos) setColor(CURSOR_COLOR);
 		std::cout << std::setw(4) << std::left << i;
+		resetColor();
 	}
 	std::cout << std::endl;
 
@@ -76,15 +101,20 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	// 첫번째 Pitch 계이름 줄
 	std::cout << std::setw(8) << std::left << "Pitch";			//	8
 
+	// *중요* '커서'를 처음부터 움직여가면서 노트의 정보를 읽어온다.
 	sheet.cursor.cs();
 	for (int i = 0; i < 24; ++i) {								//	24*4 = 96
-		
+		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR); // 커서가 가리키고 있으면 색을 변경.
+
 		if (sheet.getNote().is_NULL == true) {
+			setColor(EMPTY_COLOR);
 			std::cout << "NUL ";			// 널노트의 계이름은 빈 공간.
 		}
 		else {
 			std::cout << std::setw(4) << std::left << sheet.getNote().getPitch();
 		}
+
+		resetColor(); // 색을 원래대로 돌려둔다.
 		sheet.cursor.cr();
 	}
 	std::cout << std::endl;
@@ -95,16 +125,20 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	// 줄10
 	// 첫번째 박자 Rhythm 줄
 	std::cout << std::setw(8) << std::left << "Rhythm";			//	8
-		// 어머님께서는 항상 커서를 원위치 하는 것을 잊지 말거라,라고 말씀하셨지.	// 어머님께서는 항상 커서를 원위치 하는 것을 잊지 말거라,라고 말씀하셨지.
+		//  커서를 원위치 커서를 원위치 
 	sheet.cursor.cs();
 	for (int i = 0; i < 24; ++i) {								//	24*4 = 96
+		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR);
 
 		if (sheet.getNote().is_NULL) {
+			setColor(EMPTY_COLOR);
 			std::cout << "0   ";
 		}
 		else {
 			std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
 		}
+
+		resetColor();
 		sheet.cursor.cr();
 	}
 	std::cout << std::endl;
@@ -114,8 +148,14 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 
 	// 줄12
 	// 첫번째 아랫쪽 경계 줄
-	for (int i = 0; i < 120; ++i) {
-		std::cout << '-';
+	if (mode == 0) {//삽입 초록 10
+		printLine(120, 10);
+	}
+	if (mode == 1) {//대체 회색 8
+		printLine(120, 8);
+	}
+	if (mode == 2) {// 삭제 빨강 12
+		printLine(120, 12);
 	}
 	std::cout << std::endl;
 
@@ -124,8 +164,14 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 
 	// 줄14
 	// 두번째 윗쪽 경계 줄
-	for (int i = 0; i < 120; ++i) {
-		std::cout << '-';
+	if (mode == 0) {//삽입 초록 10
+		printLine(120, 10);
+	}
+	if (mode == 1) {//대체 회색 8
+		printLine(120, 8);
+	}
+	if (mode == 2) {// 삭제 빨강 12
+		printLine(120, 12);
 	}
 	std::cout << std::endl;
 
@@ -137,7 +183,9 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	std::cout << std::setw(8) << std::left << "Cursor";	//	8
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
 		if (i == cursor_pos) {
+			setColor(CURSOR_COLOR);
 			std::cout << "V   ";
+			resetColor();
 		}
 		else {
 			std::cout << "    ";
@@ -152,7 +200,9 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	// 두번째 Order 순서 줄
 	std::cout << std::setw(8) << std::left << "Order";	//	8
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
+		if (i == cursor_pos) setColor(CURSOR_COLOR);
 		std::cout << std::setw(4) << std::left << i;
+		resetColor();
 	}	
 	std::cout << std::endl;
 
@@ -165,13 +215,17 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 
 	sheet.cursor.ct(24);
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
+		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR);
 
 		if (sheet.getNote().is_NULL == true) {
+			setColor(EMPTY_COLOR);
 			std::cout << "NUL ";			// 널노트의 계이름은 빈 공간.
 		}
 		else {
 			std::cout << std::setw(4) << std::left << sheet.getNote().getPitch();
 		}
+
+		resetColor();
 		sheet.cursor.cr();
 	}
 	std::cout << std::endl;
@@ -186,12 +240,16 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	sheet.cursor.ct(24);
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
 
+		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR);
 		if (sheet.getNote().is_NULL) {
+			setColor(EMPTY_COLOR);
 			std::cout << "0   ";
 		}
 		else {
 			std::cout << std::setw(4) << std::left << sheet.getNote().getRhythm();
 		}
+
+		resetColor();
 		sheet.cursor.cr();
 	}
 	std::cout << std::endl;
@@ -201,15 +259,26 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 
 	// 줄24
 	// 두번째 아랫쪽 경계 줄
-	for (int i = 0; i < 55; ++i) {										// 55
-		std::cout << '-';
+	if (mode == 0) {//삽입 초록 10
+		printLine(55, 10);
 	}
-
+	if (mode == 1) {//대체 회색 8
+		printLine(55, 8);
+	}
+	if (mode == 2) {// 삭제 빨강 12
+		printLine(55, 12);
+	}
 	std::cout << " page: ";												//	7
 	std::cout << std::setw(3) << std::left << sheet.page.getPosition();	//	3
 
-	for (int i = 0; i < 55; ++i) {										// 55
-		std::cout << '-';
+	if (mode == 0) {//삽입 초록 10
+		printLine(55, 10);
+	}
+	if (mode == 1) {//대체 회색 8
+		printLine(55, 8);
+	}
+	if (mode == 2) {// 삭제 빨강 12
+		printLine(55, 12);
 	}
 
 	std::cout << std::endl;
@@ -218,7 +287,7 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	std::cout << std::endl;
 
 
-	// 어머님께서는 항상 커서를 원위치 하는 것을 잊지 말거라,라고 말씀하셨지.
+	// 커서 원위치 
 	sheet.cursor.ct(cursor_pos);
 }
 
