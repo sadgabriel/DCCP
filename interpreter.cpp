@@ -102,13 +102,12 @@ int Interpreter::executeKeywordCommand(string command) {
         mysheet.ps();
 
         for (int page_idx = 0; page_idx < 30; page_idx++) {
-            mysheet.pt(page_idx);
             for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
-                mysheet.ct(cursor_idx);
                 if (mysheet.getNote().is_NULL) goto END_LOOP;
 
                 myplayer.playNote(mysheet);
 
+                mysheet.cr();
                 printSheet();
             }
             mysheet.cs();
