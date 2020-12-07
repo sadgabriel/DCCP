@@ -124,6 +124,9 @@ const char* Converter::convertToPitch(char command_pitch, int oct) {
 	if (oct > 7) {
 		oct = 7;
 	}
+	else if (oct < 0) {
+		oct = 0;
+	}
 	pitch[1] = '0' + oct;
 
 	return pitch;
