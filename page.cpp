@@ -1,5 +1,8 @@
 #include "page.h"
 
+// 페이지의 책임.
+// pos가 0과 29 사이에 있게 한다.
+
 void Page::ps() {
     pos = 0;
 }
