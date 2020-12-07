@@ -260,6 +260,7 @@ void Interpreter::executeModeCommand(string command) {
             }
         }
 
+        if (phase == 1) throw(1);
     
 
     }
