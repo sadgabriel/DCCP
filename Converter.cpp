@@ -13,112 +13,111 @@ const char* Converter::convertToPitch(char command_pitch, int oct) {
 	if (command_pitch == 'z') {
 		pitch[0] = 'C';
 	}
-	if (command_pitch == 's') {
+	else if (command_pitch == 's') {
 		pitch[0] = 'C';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'x') {
+	else if (command_pitch == 'x') {
 		pitch[0] = 'D';
 	}
-	if (command_pitch == 'd') {
+	else if (command_pitch == 'd') {
 		pitch[0] = 'D';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'c') {
+	else if (command_pitch == 'c') {
 		pitch[0] = 'E';
 	}
-	if (command_pitch == 'v') {
+	else if (command_pitch == 'v') {
 		pitch[0] = 'F';
 	}
-	if (command_pitch == 'g') {
+	else if (command_pitch == 'g') {
 		pitch[0] = 'F';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'b') {
+	else if (command_pitch == 'b') {
 		pitch[0] = 'G';
 	}
-	if (command_pitch == 'h') {
+	else if (command_pitch == 'h') {
 		pitch[0] = 'G';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'n') {
+	else if (command_pitch == 'n') {
 		pitch[0] = 'A';
 	}
-	if (command_pitch == 'j') {
+	else if (command_pitch == 'j') {
 		pitch[0] = 'A';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'm') {
+	else if (command_pitch == 'm') {
 		pitch[0] = 'B';
 	}
 
-	if (command_pitch == 'q') {
+	else if (command_pitch == 'q') {
 		oct += 1;
 		pitch[0] = 'C';
 	}
-	if (command_pitch == '2') {
+	else if (command_pitch == '2') {
 		oct += 1;
 		pitch[0] = 'C';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'w') {
+	else if (command_pitch == 'w') {
 		oct += 1;
 		pitch[0] = 'D';
 	}
-	if (command_pitch == '3') {
+	else if (command_pitch == '3') {
 		oct += 1;
 		pitch[0] = 'D';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'e') {
+	else if (command_pitch == 'e') {
 		oct += 1;
 		pitch[0] = 'E';
 	}
-	if (command_pitch == 'r') {
+	else if (command_pitch == 'r') {
 		oct += 1;
 		pitch[0] = 'F';
 	}
-	if (command_pitch == '5') {
+	else if (command_pitch == '5') {
 		oct += 1;
 		pitch[0] = 'F';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 't') {
+	else if (command_pitch == 't') {
 		oct += 1;
 		pitch[0] = 'G';
 	}
-	if (command_pitch == '6') {
+	else if (command_pitch == '6') {
 		oct += 1;
 		pitch[0] = 'G';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'y') {
+	else if (command_pitch == 'y') {
 		oct += 1;
 		pitch[0] = 'A';
 	}
-	if (command_pitch == '7') {
+	else if (command_pitch == '7') {
 		oct += 1;
 		pitch[0] = 'A';
 		pitch[2] = '#';
 	}
-	if (command_pitch == 'u') {
+	else if (command_pitch == 'u') {
 		oct += 1;
 		pitch[0] = 'B';
 	}
-	if ((command_pitch == '@') || (command_pitch == ',' )) {
+	else if ((command_pitch == '@') || (command_pitch == ',' )) {
 		pitch[0] = command_pitch;		// 쉼표는 그대로 넣어서 노트의 생성자에서 처리.
 	}
 
 
-	if (command_pitch == 'i') { oct += 2; pitch[0] = 'C'; }
-	if (command_pitch == '9') { oct += 2; pitch[0] = 'C'; pitch[2] = '#'; }
-	if (command_pitch == 'o') {
+	else if (command_pitch == 'i') { oct += 2; pitch[0] = 'C'; }
+	else if (command_pitch == '9') { oct += 2; pitch[0] = 'C'; pitch[2] = '#'; }
+	else if (command_pitch == 'o') {
 		oct += 2; pitch[0] = 'D';
 	}
-	if (command_pitch == '0') { oct += 2; pitch[0] = 'D'; pitch[2] = '#'; }
-	if (command_pitch == 'p') { oct += 2; pitch[0] = 'E'; }
-
-	if (command_pitch == '\0') throw(1);
+	else if (command_pitch == '0') { oct += 2; pitch[0] = 'D'; pitch[2] = '#'; }
+	else if (command_pitch == 'p') { oct += 2; pitch[0] = 'E'; }
+	else throw(1);
 
 	// int to char. 옥타브 입력
 	pitch[1] = '0' + oct;
