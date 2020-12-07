@@ -120,6 +120,10 @@ const char* Converter::convertToPitch(char command_pitch, int oct) {
 	else throw(1);
 
 	// int to char. 옥타브 입력
+
+	if (oct > 7) {
+		oct = 7;
+	}
 	pitch[1] = '0' + oct;
 
 	return pitch;
