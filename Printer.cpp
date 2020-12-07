@@ -1,7 +1,9 @@
 #include "Printer.h"
 
-#define CURSOR_COLOR 14
-#define EMPTY_COLOR 8
+#define YELLOW 14
+#define GRAY 8
+#define CURSOR_COLOR YELLOW
+#define EMPTY_COLOR GRAY
 
 void Printer::print(int octave, int mode, Sheet& sheet) {
 	// 0 »ðÀÔ ¸ðµå
