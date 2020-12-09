@@ -74,7 +74,6 @@ void SaveLoader::load(std::string filename, Sheet& mysheet) {
             }
 
             mysheet.replace(pitch_pointer, rhythm_pointer);
-            mysheet.cr();
         }
     }
 
