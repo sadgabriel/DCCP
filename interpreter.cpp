@@ -143,7 +143,7 @@ int Interpreter::executeKeywordCommand(string command) {
         else throw(1);
     }
     else if (command.find("color") == 0) {
-        mysheet.getNote()->color = stoi(command.substr(5));
+        mysheet.getNote()->setColor(stoi(command.substr(5)));
     }
 
     // cursor command

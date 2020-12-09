@@ -60,7 +60,7 @@ public:
 	// 쉼표는 주파수가 0이고 길이를 갖는다.
 	bool is_NULL;		// 사용되는 노트인지 구분.
 	bool is_rest;		// 
-	int color;
+	
 
 	Note() {
 		pitch = nullptr;
@@ -105,4 +105,10 @@ public:
 
 	const char* getPitch() { return pitch; }	// 노트의 계이름을 리턴한다.
 	const char* getRhythm() { return rhythm; }	// 노트의 박자를 리턴한다.
+
+	int getColor() { return color; }
+	int setColor(int i) { if (i <= 15 && i >= 0) color = i; else throw(1); }
+
+private:
+	int color;
 };
