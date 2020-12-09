@@ -53,6 +53,9 @@ void Interpreter::execute(string command) { // 명령을 실행한다.
         if (a == 1) pushOutput("Invalid command.");
         else pushOutput("something worng");
     }
+    catch (...) {
+        pushOutput("Crash");
+    }
 
     printSheet(); // 화면을 갱신한다.
 }
@@ -138,6 +141,9 @@ int Interpreter::executeKeywordCommand(string command) {
             mysaveloader.load(command.substr(4), mysheet);
         }
         else throw(1);
+    }
+    else if (command.find("color") == 0) {
+        mysheet.getNote()->color = stoi(command.substr(5));
     }
 
     // cursor command

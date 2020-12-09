@@ -1,5 +1,58 @@
 ﻿#pragma once
 #include <windows.h>
+#include "color.h"
+
+
+/*
+class BaseNote {
+public:
+	virtual ~BaseNote() = 0;
+	bool is_null();
+	bool is_rest();
+
+	virtual const char* getPitch() = 0;
+	virtual const char* getRhythm() = 0;
+
+	void setColor(int);
+	int getColor();
+public:
+	bool null;
+	bool rest;
+	int color;
+};
+
+class Note : public BaseNote {
+public:
+	Note(const char*, const char*);
+	~Note();
+
+	const char* getPitch();
+	const char* getRhythm();
+private:
+	Note();
+	const char* pitch;
+	const char* rhythm;
+};
+
+class RestNote : public BaseNote {
+public:
+	RestNote(const char*);
+	~RestNote();
+
+	const char* getPitch();
+	const char* getRhythm();
+private:
+	RestNote();
+	const char* rhythm;
+};
+
+class NullNote : public BaseNote {
+public:
+	NullNote();
+	const char* getPitch();
+	const char* getRhythm();
+};
+*/
 
 class Note{
 public:
@@ -7,12 +60,14 @@ public:
 	// 쉼표는 주파수가 0이고 길이를 갖는다.
 	bool is_NULL;		// 사용되는 노트인지 구분.
 	bool is_rest;		// 
+	int color;
 
 	Note() {
 		pitch = nullptr;
 		rhythm = nullptr;
 		is_NULL = true;
 		is_rest = true;
+		color = GRAY;
 	}
 
 	// 노트 생성자
@@ -50,7 +105,4 @@ public:
 
 	const char* getPitch() { return pitch; }	// 노트의 계이름을 리턴한다.
 	const char* getRhythm() { return rhythm; }	// 노트의 박자를 리턴한다.
-
-private:
 };
-

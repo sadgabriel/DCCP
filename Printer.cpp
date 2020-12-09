@@ -1,9 +1,7 @@
 #include "Printer.h"
+#include "color.h"
 
-#define YELLOW 14
-#define GRAY 8
 #define CURSOR_COLOR YELLOW
-#define EMPTY_COLOR GRAY
 
 void Printer::print(int octave, int mode, Sheet& sheet) {
 	// 0 삽입 모드
@@ -105,9 +103,8 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	sheet.cursor.cs();
 	for (int i = 0; i < 24; ++i) {								//	24*4 = 96
 		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR); // 커서가 가리키고 있으면 색을 변경.
-
+		else setColor(sheet.getNote()->color);
 		if (sheet.getNote()->is_NULL == true) {
-			setColor(EMPTY_COLOR);
 			std::cout << "NUL ";			// 널노트의 계이름은 빈 공간.
 		}
 		else {
@@ -129,9 +126,8 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	sheet.cursor.cs();
 	for (int i = 0; i < 24; ++i) {								//	24*4 = 96
 		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR);
-
+		else setColor(sheet.getNote()->color);
 		if (sheet.getNote()->is_NULL) {
-			setColor(EMPTY_COLOR);
 			std::cout << "0   ";
 		}
 		else {
@@ -216,9 +212,8 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	sheet.cursor.ct(24);
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
 		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR);
-
+		else setColor(sheet.getNote()->color);
 		if (sheet.getNote()->is_NULL == true) {
-			setColor(EMPTY_COLOR);
 			std::cout << "NUL ";			// 널노트의 계이름은 빈 공간.
 		}
 		else {
@@ -241,8 +236,8 @@ void Printer::print(int octave, int mode, Sheet& sheet) {
 	for (int i = 24; i < 48; ++i) {						//	24*4 = 96
 
 		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR);
+		else setColor(sheet.getNote()->color);
 		if (sheet.getNote()->is_NULL) {
-			setColor(EMPTY_COLOR);
 			std::cout << "0   ";
 		}
 		else {
