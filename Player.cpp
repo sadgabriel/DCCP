@@ -2,22 +2,22 @@
 
 // 시트의 현재 페이지의 현재 커서의 노트 하나를 Beep한다.
 void Player::playNote(Sheet& sheet) {
-	Note playing_note = sheet.getNote();
+	Note* playing_note = sheet.getNote();
 
-	if (playing_note.is_NULL == true) {
+	if (playing_note->is_NULL == true) {
 		// do nothing
 	}
-	else if (playing_note.is_rest == true) {
-		Beep(0, convertToMilisec(playing_note.rhythm, sheet.BPM));
+	else if (playing_note->is_rest == true) {
+		Beep(0, convertToMilisec(playing_note->rhythm, sheet.BPM));
 	}
 	else {
-		Beep(convertToFreq(playing_note.pitch), convertToMilisec(playing_note.rhythm, sheet.BPM));
+		Beep(convertToFreq(playing_note->pitch), convertToMilisec(playing_note->rhythm, sheet.BPM));
 	}
 }
 
-void Player::playNote(Note& note, int BPM) {
-	if (note.is_NULL == false) {
-		Beep(convertToFreq(note.pitch), convertToMilisec(note.rhythm, BPM));
+void Player::playNote(Note* note, int BPM) {
+	if (note->is_NULL == false) {
+		Beep(convertToFreq(note->pitch), convertToMilisec(note->rhythm, BPM));
 	}
 
 }

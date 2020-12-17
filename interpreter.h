@@ -4,6 +4,7 @@
 #include <string>
 #include <stdexcept>
 #include <map>
+#include <cassert>
 
 #include "cursor.h"
 #include "page.h"
@@ -39,7 +40,7 @@ private:
     map<string, string> user_commands;
 
     // insert string into outputs
-    void pushOutput(string); 
+    void pushOutput(string&); 
     void pushOutput(const char*);
 
     // print mysheet and outputs on screen

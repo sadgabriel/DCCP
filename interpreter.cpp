@@ -2,7 +2,7 @@
 
 
 void removeSpace(string& str) {
-    // remove all space character from string.
+    // 문자열의 공백을 제거한다.
 
     unsigned int i = 0;
     while (i < str.size()) {
@@ -13,46 +13,51 @@ void removeSpace(string& str) {
     }
 }
 
-Interpreter::Interpreter() {
+Interpreter::Interpreter() { // 생성될 때 프린트를 한 번 해준다.
     printSheet();
 }
 
-void Interpreter::pushOutput(string str) {
+void Interpreter::pushOutput(string& str) { // output에 문자열을 넣는다.
     outputs.push_back(str);
 }
 
-void Interpreter::pushOutput(const char* str) {
+void Interpreter::pushOutput(const char* str) { // output에 문자열을 넣는다. 2
     string s{ str };
     pushOutput(s);
 }
 
 void Interpreter::printSheet() {
-    system("cls");
-    myprinter.print(octave, mode, mysheet);
+    system("cls"); // 창을 지우고
+    myprinter.print(octave, mode, mysheet); // sheet를 출력하고
     for (string output : outputs) {
-        cout << output << endl;
+        cout << output << endl; // output 안의 string들을 차례로 출력하고
     }
-    cout << endl << "Enter Your Command." << endl;
+    cout << endl << "Enter Your Command." << endl; // 커맨드를 입력받는다고 출력한다.
 
-    outputs.clear();
+    outputs.clear(); // output을 비운다.
 }
 
-void Interpreter::execute(string command) {
+void Interpreter::execute(string command) { // 명령을 실행한다.
 
     try {
-        if (command[0] == ':' && executeKeywordCommand(command.substr(1))) {
-            throw(1);
+        if (command[0] == ':') {
+            if (executeKeywordCommand(command.substr(1))) throw(1);
         }
         else {
-            if (executeKeywordCommand(command))
+            if (executeKeywordCommand(command)) {
                 executeModeCommand(command);
+            }
         }
     }
+    catch (int a) {
+        if (a == 1) pushOutput("Invalid command.");
+        else pushOutput("something worng");
+    }
     catch (...) {
-        pushOutput("Invalid input.");
+        pushOutput("Crash");
     }
 
-    printSheet();
+    printSheet(); // 화면을 갱신한다.
 }
 
 int Interpreter::executeKeywordCommand(string command) {
@@ -73,6 +78,8 @@ int Interpreter::executeKeywordCommand(string command) {
         if (i < command.size())
             B.append(command.substr(i));
         else throw(1);
+        
+        removeSpace(B);
 
         if (user_commands.count(A) == 0)
             user_commands.insert(pair<string, string>(A, B));
@@ -83,10 +90,64 @@ int Interpreter::executeKeywordCommand(string command) {
 
 
     removeSpace(command);
+    // user-defined keyword handle
+    if (user_commands.find(command) != user_commands.end()) {
+        executeModeCommand((*user_commands.find(command)).second);
+    }
 
     // pre-defined keyword handle
+
+    // system
+    else if (command == "exit") {
+        exit(0);
+    }
+    else if (command == "play") {
+        int original_cursor_pos = mysheet.cursor.getPosition();
+        int original_page_pos = mysheet.page.getPosition();
+
+        mysheet.cs();
+        mysheet.ps();
+
+        for (int page_idx = 0; page_idx < 30; page_idx++) {
+            for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
+                if (mysheet.getNote()->is_NULL) goto END_LOOP;
+
+                myplayer.playNote(mysheet);
+
+                mysheet.cr();
+                printSheet();
+            }
+            mysheet.cs();
+        }
+    END_LOOP:
+
+        mysheet.ct(original_cursor_pos);
+        mysheet.pt(original_page_pos);
+    }
+    else if (command.find("save") == 0) {
+        string filename;
+
+        if (command.size() >= 5) {
+            filename = command.substr(4);
+            removeSpace(filename);
+        }
+
+        mysaveloader.save(filename, mysheet);
+    }
+    else if (command.find("load") == 0) {
+        if (command.size() >= 5) {
+            string filename = command.substr(4);
+            removeSpace(filename);
+            mysaveloader.load(command.substr(4), mysheet);
+        }
+        else throw(1);
+    }
+    else if (command.find("color") == 0) {
+        mysheet.getNote()->setColor(stoi(command.substr(5)));
+    }
+
     // cursor command
-    if (command == "cs") {
+    else if (command == "cs") {
         // cursor start
         mysheet.cs();
     }
@@ -166,71 +227,23 @@ int Interpreter::executeKeywordCommand(string command) {
         else if (n > 7) octave = 7;
         else octave = 0;
     }
-
-    // change BPM
     else if (command.find("BPM") == 0) {
         int new_bpm = stoi(command.substr(3));
         if (new_bpm > 0) mysheet.BPM = new_bpm;
     }
+    else return 1; // 어떤 키워드와도 일치하지 않음.
 
-    // system
-    else if (command == "exit") {
-        exit(0);
-    }
-    else if (command == "play") {
-
-        mysheet.cs();
-        mysheet.ps();
-
-        for (int page_idx = 0; page_idx < 30; page_idx++) {
-            mysheet.pt(page_idx);
-            for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
-                mysheet.ct(cursor_idx);
-                if (mysheet.getNote().is_NULL) goto END_LOOP;
-
-                myplayer.playNote(mysheet);
-
-                printSheet();
-            }
-            mysheet.cs();
-        }
-    END_LOOP:
-
-        mysheet.cs();
-        mysheet.ps();
-    }
-    else if (command.find("save") == 0) {
-        string filename;
-
-        if (command.size() >= 5) {
-            filename = command.substr(4);
-            removeSpace(filename);
-        }
-
-        mysaveloader.save(filename, mysheet);
-    }
-    else if (command.find("load") == 0) {
-        if (command.size() >= 5) {
-            string filename = command.substr(4);
-            removeSpace(filename);
-            mysaveloader.load(command.substr(4), mysheet);
-        }
-        else throw(1);
-    }
-
-    // user-defined keyword handle
-    else if (user_commands.find(command) != user_commands.end()) {
-        execute((*user_commands.find(command)).second);
-    }
-    else {
-        return 1;
-    }
-    return 0;
+    return 0; 
 }
 
 void Interpreter::executeModeCommand(string command) {
     if (mode == REMOVE) {
-        mysheet.remove(stoi(command));
+        try {
+            mysheet.remove(stoi(command));
+        }
+        catch (...) {
+            throw(1);
+        }
     }
     else {
 
@@ -256,21 +269,22 @@ void Interpreter::executeModeCommand(string command) {
                 else {
                     rhythm = command[i];
 
-                    if (command.size() > i + 2 && (command[i + 1] == '.' || command[i + 1] == '*')) {
+                    if (command.size() > i + 1 && (command[i + 1] == '.' || command[i + 1] == '*')) {
                         dot = true;
                         i++;
+                        
                     }
                     else {
                         dot = false;
                     }
 
                     
-                    Note note;
+                    Note* note;
                     if (mode == INSERT) {
                         note = mysheet.insert(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
                     }
-                    else if (mode == REPLACE) {
+                    else{
                         note = mysheet.replace(myconverter.convertToPitch(pitch, temp_octave),
                             myconverter.convertToRhythm(rhythm, dot));
                     }

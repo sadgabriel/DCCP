@@ -1,5 +1,7 @@
 #include "cursor.h"
 
+// 커서의 책임.
+// pos가 0과 47 사이에 있게 한다.
 
 void Cursor::cs() {
     pos = 0;

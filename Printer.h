@@ -2,6 +2,13 @@
 #include "Sheet.h"
 #include <iostream>
 #include <iomanip>
+#include "color.h"
+
+#define INSERT 0
+#define REPLACE 1
+#define REMOVE 2
+
+#define CURSOR_COLOR YELLOW
 
 // colored text with cout
 // https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
@@ -20,9 +27,6 @@
 class Printer{
 public:
 	void print(int octave, int mode, Sheet&);
-    // 0 삽입 모드
-    // 1 대체 모드
-    // 2 삭제 모드
 
     // x is the column, y is the row. The origin (0,0) is top-left.
     void setCursorPosition(int x, int y);
@@ -35,7 +39,7 @@ private:
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         for (int k = 1; k < 16; ++k) {
             SetConsoleTextAttribute(hConsole, k);
-            std::cout << k << " Coler Text is AWESOME!" << std::endl;
+            std::cout << k << " Color Text is AWESOME!" << std::endl;
         }
     }
     void setColor(int color) {
@@ -46,6 +50,8 @@ private:
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleTextAttribute(hConsole, 7);
     }
+    
+    int cursor_pos;
 
     // 콘솔에 프린트하는 함수들
     // 활용도를 위해서 마지막에 endl 출력 안함
@@ -56,5 +62,16 @@ private:
         }
         resetColor();
     }
+
+    void printLineByMode(int count, int mode) {
+        if (mode == INSERT) printLine(count, GREEN);
+        else if (mode == REPLACE) printLine(count, GRAY);
+        else if (mode == REMOVE) printLine(count, RED);
+    }
+
+    void printCursorLine(int start, int end, Sheet& sheet);
+    void printOrderLine(int start, int end, Sheet& sheet);
+    void printPitchLine(int start, int end, Sheet& sheet);
+    void printRhythmLine(int start, int end, Sheet& sheet);
 };
 
