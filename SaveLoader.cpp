@@ -1,7 +1,5 @@
 #include "SaveLoader.h"
 
-
-
 void SaveLoader::save(std::string filename, Sheet& mysheet) {
     static std::string old_filename = std::string("default.txt");
 
@@ -11,23 +9,23 @@ void SaveLoader::save(std::string filename, Sheet& mysheet) {
 
     std::ofstream output(filename, std::ios::out);
     
+    int ori_cur_pos = mysheet.cursor.getPosition();
+    int ori_page_pos = mysheet.page.getPosition();
     
-    mysheet.cursor.cs();
-    mysheet.page.ps();
+    mysheet.cs();
+    mysheet.ps();
     for (int page_idx = 0; page_idx < 30; page_idx++) {
         for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
-            if (mysheet.getNote().is_NULL) goto END_LOOP1;
-            Note mynote = mysheet.getNote();
-            output << mynote.getPitch() << ':' << mynote.getRhythm() << std::endl;
-            mysheet.cursor.cr();
+            if (mysheet.getNote()->is_NULL) goto END_LOOP1;
+            Note* mynote = mysheet.getNote();
+            output << mynote->getPitch() << ':' << mynote->getRhythm() << std::endl;
+            mysheet.cr();
         }
-        mysheet.cursor.cs();
-        mysheet.page.pr();
     }
     END_LOOP1:
 
-    mysheet.cursor.cs();
-    mysheet.page.ps();
+    mysheet.ct(ori_cur_pos);
+    mysheet.pt(ori_page_pos);
 
     output.close();
 }
@@ -44,8 +42,8 @@ void SaveLoader::load(std::string filename, Sheet& mysheet) {
     std::string line;
     int delimiter_pos;
 
-    mysheet.cursor.cs();
-    mysheet.page.ps();
+    mysheet.cs();
+    mysheet.ps();
 
     for (int page_idx = 0; page_idx < 30; page_idx++) {
         for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
@@ -75,16 +73,14 @@ void SaveLoader::load(std::string filename, Sheet& mysheet) {
                 rhythm_pointer[i] = rhythm[i];
             }
 
-            mysheet.insert(pitch_pointer, rhythm_pointer);
+            mysheet.replace(pitch_pointer, rhythm_pointer);
         }
-        mysheet.cursor.cs();
-        mysheet.page.pr();
     }
 
     END_LOOP2:
 
-    mysheet.cursor.cs();
-    mysheet.page.ps();
+    mysheet.cs();
+    mysheet.ps();
 
     input.close();
 }
