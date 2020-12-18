@@ -43,6 +43,9 @@ void Interpreter::execute(string command) { // 명령을 실행한다.
         if (command[0] == ':') {
             if (executeKeywordCommand(command.substr(1))) throw(1);
         }
+        else if (command[0] == '/') {
+            if (executeHelpCommand(command.substr(1))) throw (1);
+        }
         else {
             if (executeKeywordCommand(command)) {
                 executeModeCommand(command);
@@ -53,11 +56,17 @@ void Interpreter::execute(string command) { // 명령을 실행한다.
         if (a == 1) pushOutput("Invalid command.");
         else pushOutput("something worng");
     }
+
     catch (...) {
         pushOutput("Crash");
     }
 
     printSheet(); // 화면을 갱신한다.
+}
+int Interpreter::executeHelpCommand(string command) {
+    string helpcommand = myhelper.whatCommand(command);
+    pushOutput(helpcommand);
+    return 0;
 }
 
 int Interpreter::executeKeywordCommand(string command) {
@@ -215,21 +224,31 @@ int Interpreter::executeKeywordCommand(string command) {
     else if (command == "ou") {
         // octave up
         if (octave < 7) octave++;
+        else {
+            pushOutput("maximum octave");
+        }
     }
     else if (command == "od") {
         // octave down
         if (octave > 0) octave--;
+        else {
+            pushOutput("minimum octave");
+        }
     }
     else if (command.find("ot") == 0) {
         // octave to n
         int n = stoi(command.substr(2));
         if (n >= 0 && n <= 7) octave = n;
-        else if (n > 7) octave = 7;
-        else octave = 0;
+        else {
+            pushOutput("Octave range exceed");
+        }
     }
     else if (command.find("BPM") == 0) {
         int new_bpm = stoi(command.substr(3));
         if (new_bpm > 0) mysheet.BPM = new_bpm;
+        else {
+            pushOutput("bpm cannot go below zero");
+        }
     }
     else return 1; // 어떤 키워드와도 일치하지 않음.
 
