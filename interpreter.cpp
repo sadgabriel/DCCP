@@ -41,7 +41,7 @@ void Interpreter::execute(string command) { // 명령을 실행한다.
 
     try {
         if (command[0] == ':') {
-            if (executeKeywordCommand(command.substr(1))) throw(1);
+            if (executeUserCommand(command.substr(1)) && executeKeywordCommand(command.substr(1))) throw(1);
         }
         else if (command[0] == '/') {
             if (executeHelpCommand(command.substr(1))) throw (1);
@@ -67,6 +67,15 @@ int Interpreter::executeHelpCommand(string command) {
     string helpcommand = myhelper.whatCommand(command);
     pushOutput(helpcommand);
     return 0;
+}
+
+int Interpreter::executeUserCommand(string command) {
+    // user-defined keyword handle
+    if (user_commands.find(command) != user_commands.end()) {
+        executeModeCommand((*user_commands.find(command)).second);
+        return 0;
+    }
+    return 1;
 }
 
 int Interpreter::executeKeywordCommand(string command) {
@@ -99,15 +108,11 @@ int Interpreter::executeKeywordCommand(string command) {
 
 
     removeSpace(command);
-    // user-defined keyword handle
-    if (user_commands.find(command) != user_commands.end()) {
-        executeModeCommand((*user_commands.find(command)).second);
-    }
 
     // pre-defined keyword handle
 
     // system
-    else if (command == "exit") {
+    if (command == "exit") {
         exit(0);
     }
     else if (command == "play") {
