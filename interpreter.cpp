@@ -157,12 +157,11 @@ int Interpreter::executeKeywordCommand(string command) {
                 mysheet.pt(page_idx);
                 mysheet.ct(cursor_idx);
 
+                printSheet();
                 if (mysheet.getNote()->is_NULL) goto END_LOOP;
 
                 myplayer.playNote(mysheet);
 
-                mysheet.cr();
-                printSheet();
             }
         }
     END_LOOP:
