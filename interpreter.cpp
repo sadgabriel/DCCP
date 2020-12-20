@@ -41,7 +41,7 @@ void Interpreter::execute(string command) { // 명령을 실행한다.
 
     try {
         if (command[0] == ':') {
-            if (executeKeywordCommand(command.substr(1))) throw(1);
+            if (executeUserCommand(command.substr(1)) && executeKeywordCommand(command.substr(1))) throw(1);
         }
         else if (command[0] == '/') {
             if (executeHelpCommand(command.substr(1))) throw (1);
@@ -69,6 +69,15 @@ int Interpreter::executeHelpCommand(string command) {
     return 0;
 }
 
+int Interpreter::executeUserCommand(string command) {
+    // user-defined keyword handle
+    if (user_commands.find(command) != user_commands.end()) {
+        executeModeCommand((*user_commands.find(command)).second);
+        return 0;
+    }
+    return 1;
+}
+
 int Interpreter::executeKeywordCommand(string command) {
     // define command
     if (command.find("define") == 0) {
@@ -94,31 +103,60 @@ int Interpreter::executeKeywordCommand(string command) {
             user_commands.insert(pair<string, string>(A, B));
         else throw(1);
 
+        pushOutput("Custom Command successfully stored.");
         return 0;
     }
 
+    else if (command.find("play") == 0) {
+        string A;
+        string B;
+        unsigned int i = 4;
 
-    removeSpace(command);
-    // user-defined keyword handle
-    if (user_commands.find(command) != user_commands.end()) {
-        executeModeCommand((*user_commands.find(command)).second);
-    }
+        while (i < command.size() && command[i] == ' ') i++;
 
-    // pre-defined keyword handle
+        while (i < command.size() && command[i] != ' ') {
+            A.append(command.substr(i, 1));
+            i++;
+        }
 
-    // system
-    else if (command == "exit") {
-        exit(0);
-    }
-    else if (command == "play") {
+        if (i < command.size()) B.append(command.substr(i));
+        removeSpace(B);
+
+        int page_start;
+        int page_end;
+        int cursor_start;
+        int cursor_end;
+
+        if (A.size() == 0) {
+            page_start = 0;
+            page_end = 30;
+            cursor_start = 0;
+            cursor_end = 48;
+        }
+        else if (B.size() == 0) {
+            page_start = mysheet.page.getPosition();
+            page_end = page_start + 1;
+            cursor_start = stoi(A);
+            cursor_end = 48;
+        }
+        else {
+            page_start = mysheet.page.getPosition();
+            page_end = page_start + 1;
+            cursor_start = stoi(A);
+            cursor_end = stoi(B) + 1;
+        }
+
+        if (cursor_start < 0 || cursor_end > 48) throw(1);
+
         int original_cursor_pos = mysheet.cursor.getPosition();
         int original_page_pos = mysheet.page.getPosition();
 
-        mysheet.cs();
-        mysheet.ps();
 
-        for (int page_idx = 0; page_idx < 30; page_idx++) {
-            for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
+        for (int page_idx = page_start; page_idx < page_end; page_idx++) {
+            for (int cursor_idx = cursor_start; cursor_idx < cursor_end; cursor_idx++) {
+                mysheet.pt(page_idx);
+                mysheet.ct(cursor_idx);
+
                 if (mysheet.getNote()->is_NULL) goto END_LOOP;
 
                 myplayer.playNote(mysheet);
@@ -126,12 +164,21 @@ int Interpreter::executeKeywordCommand(string command) {
                 mysheet.cr();
                 printSheet();
             }
-            mysheet.cs();
         }
     END_LOOP:
-
-        mysheet.ct(original_cursor_pos);
         mysheet.pt(original_page_pos);
+        mysheet.ct(original_cursor_pos);
+        return 0;
+    }
+
+
+    removeSpace(command);
+
+    // pre-defined keyword handle
+
+    // system
+    if (command == "exit") {
+        exit(0);
     }
     else if (command.find("save") == 0) {
         string filename;
@@ -153,6 +200,14 @@ int Interpreter::executeKeywordCommand(string command) {
     }
     else if (command.find("color") == 0) {
         mysheet.getNote()->setColor(stoi(command.substr(5)));
+    }
+    else if (command == "showcustom") {
+        for (pair<string, string> p : user_commands) {
+            string line = p.first;
+            line.append(" : ");
+            line.append(p.second);
+            pushOutput(line);
+        }
     }
 
     // cursor command

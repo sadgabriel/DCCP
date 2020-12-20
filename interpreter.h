@@ -50,6 +50,9 @@ private:
     // execute command as keyword command. if fails, return 1. else 0.
     int executeKeywordCommand(string command);
 
+    // execute user-defined command. if fails, return 1. else 0.
+    int executeUserCommand(string command);
+
     // execute command as Help command. if fails, return 1. else 0.
     int executeHelpCommand(string command);
 
