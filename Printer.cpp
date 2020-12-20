@@ -34,6 +34,8 @@ void Printer::printPitchLine(int start, int end, Sheet& sheet) {
 
 	sheet.ct(start);
 	for (int i = start; i < end; ++i) {								//	24*4 = 96
+		sheet.ct(i);
+		
 		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR); // 커서가 가리키고 있으면 색을 변경.
 		else setColor(sheet.getNote()->getColor());
 
@@ -45,15 +47,16 @@ void Printer::printPitchLine(int start, int end, Sheet& sheet) {
 		}
 
 		resetColor(); // 색을 원래대로 돌려둔다.
-		sheet.cr();
 	}
 	std::cout << std::endl;
 }
 
 void Printer::printRhythmLine(int start, int end, Sheet& sheet) {
+	
 	std::cout << std::setw(8) << std::left << "Rhythm";			//	8
 	sheet.ct(start);
 	for (int i = start; i < end; ++i) {								//	24*4 = 96
+		sheet.ct(i);
 		if (sheet.cursor.getPosition() == cursor_pos) setColor(CURSOR_COLOR);
 		else setColor(sheet.getNote()->getColor());
 		if (sheet.getNote()->is_NULL) {
@@ -64,7 +67,6 @@ void Printer::printRhythmLine(int start, int end, Sheet& sheet) {
 		}
 
 		resetColor();
-		sheet.cr();
 	}
 	std::cout << std::endl;
 }
