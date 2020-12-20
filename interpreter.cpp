@@ -107,6 +107,70 @@ int Interpreter::executeKeywordCommand(string command) {
         return 0;
     }
 
+    else if (command.find("play") == 0) {
+        string A;
+        string B;
+        unsigned int i = 4;
+
+        while (i < command.size() && command[i] == ' ') i++;
+
+        while (i < command.size() && command[i] != ' ') {
+            A.append(command.substr(i, 1));
+            i++;
+        }
+
+        if (i < command.size()) B.append(command.substr(i));
+        removeSpace(B);
+
+        int page_start;
+        int page_end;
+        int cursor_start;
+        int cursor_end;
+
+        if (A.size() == 0) {
+            page_start = 0;
+            page_end = 30;
+            cursor_start = 0;
+            cursor_end = 48;
+        }
+        else if (B.size() == 0) {
+            page_start = mysheet.page.getPosition();
+            page_end = page_start + 1;
+            cursor_start = stoi(A);
+            cursor_end = 48;
+        }
+        else {
+            page_start = mysheet.page.getPosition();
+            page_end = page_start + 1;
+            cursor_start = stoi(A);
+            cursor_end = stoi(B) + 1;
+        }
+
+        if (cursor_start < 0 || cursor_end > 48) throw(1);
+
+        int original_cursor_pos = mysheet.cursor.getPosition();
+        int original_page_pos = mysheet.page.getPosition();
+
+
+        for (int page_idx = page_start; page_idx < page_end; page_idx++) {
+            for (int cursor_idx = cursor_start; cursor_idx < cursor_end; cursor_idx++) {
+                mysheet.pt(page_idx);
+                mysheet.ct(cursor_idx);
+
+                if (mysheet.getNote()->is_NULL) goto END_LOOP;
+
+                myplayer.playNote(mysheet);
+
+                mysheet.cr();
+                printSheet();
+            }
+        }
+    END_LOOP:
+        mysheet.pt(original_page_pos);
+        mysheet.ct(original_cursor_pos);
+        return 0;
+    }
+
 
     removeSpace(command);
 
@@ -115,29 +179,6 @@ int Interpreter::executeKeywordCommand(string command) {
     // system
     if (command == "exit") {
         exit(0);
-    }
-    else if (command == "play") {
-        int original_cursor_pos = mysheet.cursor.getPosition();
-        int original_page_pos = mysheet.page.getPosition();
-
-        mysheet.cs();
-        mysheet.ps();
-
-        for (int page_idx = 0; page_idx < 30; page_idx++) {
-            for (int cursor_idx = 0; cursor_idx < 48; cursor_idx++) {
-                if (mysheet.getNote()->is_NULL) goto END_LOOP;
-
-                myplayer.playNote(mysheet);
-
-                mysheet.cr();
-                printSheet();
-            }
-            mysheet.cs();
-        }
-    END_LOOP:
-
-        mysheet.ct(original_cursor_pos);
-        mysheet.pt(original_page_pos);
     }
     else if (command.find("save") == 0) {
         string filename;
