@@ -103,6 +103,7 @@ int Interpreter::executeKeywordCommand(string command) {
             user_commands.insert(pair<string, string>(A, B));
         else throw(1);
 
+        pushOutput("Custom Command successfully stored.");
         return 0;
     }
 
@@ -158,6 +159,14 @@ int Interpreter::executeKeywordCommand(string command) {
     }
     else if (command.find("color") == 0) {
         mysheet.getNote()->setColor(stoi(command.substr(5)));
+    }
+    else if (command == "showcustom") {
+        for (pair<string, string> p : user_commands) {
+            string line = p.first;
+            line.append(" : ");
+            line.append(p.second);
+            pushOutput(line);
+        }
     }
 
     // cursor command
