@@ -4,7 +4,7 @@ using namespace std;
 
 class Helper {
 private:
-	string mainHelp = " /mode_change ->how to change mode \n /Note -> how to insert/delete/replace notes \n /cursor -> about cursor \n /page -> about page \n /setting -> about octave, bpm ";
+	string mainHelp = " /mode_change ->how to change mode \n /Note -> how to insert/delete/replace notes \n /cursor -> about cursor \n /page -> about page \n /setting -> about octave, bpm \n play n m : play from n, to m. if you don't type m, then it will play until the end of the music. if you just type play, then it will play the whole music.";
 	string noteHelp = " /insert -> how to insert Note \n /remove -> how to remove Note  \n /replace -> how to replace Note";
 	string modechangehelp = " ++ : change mode to INSERT MODE. \n --: change mode to REMOVE MODE. \n **: change mode to REPLACE MODE. \n /Note to know what to do in this modes.";
 	string cursorhelp = " crN: move cursor right N steps. \n clN: move cursor left N steps. \n ctN : move cursor to N. \n ce: move cursor to the end. \n cs: move cursor to the start.";
