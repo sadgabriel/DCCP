@@ -14,7 +14,7 @@ private:
 		string remove = " remove: just type integer n, then n Notes are removed from the cursor position";
 		string insert = " you can insert note WHEN MODE IS INSERT MODE. \n you should type length, pitch like this; cv  \n c is pitch, v is length. then pitch E, length 1/8 is inserted at Cursorpoint and Cursor moves one step to the right. \n If there exists a note  \n /pitch to know what words is about pitchs. \n And, z meand 1/1 and x is 1/2 and c is 1/4 and v is 1/8 and b is 1/16.";
 		string replace = "replace: same with insert operation, but WHEN MODE IS REPLACE MODE, will replace note with typed length/pitch, instead of insert note.";
-		string pitch = "-,+ means lower octave and upper octae; \n2=C#+ 3=D#+ 5=F#+ 6=G#+ 7=A#+ 9=C#++ 10=C#++ \n Q=C+ W=D+ E=E+ R=F+ T=G+ Y=A+ U=D+ I=C++ O= D++ P= E++ \N S=C# D=D# G=F# H=G# J=A# \N Z=C X=D C=E V=F B=G N=A M=A  , IS REST.";
+		string pitch = "-,+ means lower octave and upper octae; \n2=C#+ 3=D#+ 5=F#+ 6=G#+ 7=A#+ 9=C#++ 10=C#++ \n Q=C+ W=D+ E=E+ R=F+ T=G+ Y=A+ U=D+ I=C++ O= D++ P= E++ \n S=C# D=D# G=F# H=G# J=A# \n Z=C X=D C=E V=F B=G N=A M=A  , IS REST.";
 	};
 public:
 	noteHp notehp;
