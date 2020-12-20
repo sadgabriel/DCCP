@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "SaveLoader.h"
 #include "Converter.h"
+#include "helper.h"
 
 #define INSERT 0
 #define REPLACE 1
@@ -31,7 +32,7 @@ private:
     Player myplayer;
     SaveLoader mysaveloader;
     Converter myconverter;
-
+    Helper myhelper;
     vector<string> outputs;
 
     int mode = INSERT;
@@ -48,6 +49,9 @@ private:
 
     // execute command as keyword command. if fails, return 1. else 0.
     int executeKeywordCommand(string command);
+
+    // execute command as Help command. if fails, return 1. else 0.
+    int executeHelpCommand(string command);
 
     // execute command as Mode command (insert, remove, replace). if fails, throw 1.
     void executeModeCommand(string command);
